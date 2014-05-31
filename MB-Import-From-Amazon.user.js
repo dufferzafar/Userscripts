@@ -20,19 +20,24 @@ if (category != "Music")
 }
 
 // Create a form which opens the add release form
-var myform = document.createElement("form");
-myform.method="post";
-myform.action = document.location.protocol + "//musicbrainz.org/release/add";
-myform.acceptCharset = "UTF-8";
+var addForm = document.createElement("form");
+addForm.method="post";
+addForm.action = document.location.protocol + "//musicbrainz.org/release/add";
+addForm.acceptCharset = "UTF-8";
 
 // Todo: Make the button feel like a part of Amazon
-mysubmit = document.createElement("input");
-mysubmit.type = "submit";
-mysubmit.value = "Add release to MusicBrainz";
-myform.appendChild(mysubmit);
+// var btnCSS = document.createElement("style");
+// btnCSS.type = "text/css";
+// btnCSS.innerHTML = ".mbbtn {background-color: #C0DBF2}";
+// document.body.appendChild(btnCSS);
+
+var addBtnElem = document.createElement("input");
+addBtnElem.type = "submit";
+addBtnElem.value = "Add release to MusicBrainz";
+addBtnElem.classList.add("mbbtn");
+addForm.appendChild(addBtnElem);
 
 var div = document.createElement("div");
-// div.classList.add("btn-medium");
 // div.classList.add("txtsmall");
 
 var artist = '', album = '', label = '', year = 0, month = 0, day = 0, country = 'XW', type = 'album', discs = 0;
@@ -48,7 +53,7 @@ console.log('album', document.getElementById('btAsinTitle').textContent);
 // Album Artist (Composer)
 // Todo: Loop over <a> tags to find ALL composers
 var title = document.getElementsByClassName('parseasinTitle')[0];
-var albumArtists = title.nextElementSibling.getElementsByTagName('a')
+var albumArtists = title.nextElementSibling.getElementsByTagName('a');
 console.log('artist_credit.names.0.artist.name', albumArtists[0].textContent);
 
 // Packaging
@@ -103,15 +108,34 @@ if (prodDesc)
 
    for (var i = 0; i < tracks.length; i++)
    {
-      // Todo: Regex to parse title of the track, its duration, and artists
       // console.log(tracks[i].textContent, tracks[i].nextSibling.textContent);
+
+      var reTrack = /\d+\.\s+(.*)\s+-\s+\(?(.*)\)?/;
+      var reSingers = /Singers?:\s+(.*)/;
+      var reLyricist = /Lyrics:\s+(.*)/;
+
+      var trackDetails = reTrack.exec(tracks[i].textContent);
+
+      // console.log(tracks[i].textContent);
+      // console.log(trackDetails);
+
+      console.log(trackDetails[1], trackDetails[2]);
+
+      var singers = reSingers.exec(tracks[i].nextSibling.textContent)[1].split(/[,&]/);
+
+      for (var j = 0; j < singers.length; j++)
+      {
+         singers[j] = singers[j].trim();
+      }
+
+      console.log(singers);
    }
-};
+}
 
 //////////////////////////////////////////////////////////////////////////////
 
 // Append our button to the body
-div.appendChild(myform);
+div.appendChild(addForm);
 var parent = document.getElementsByClassName('buyingDetailsGrid')[0];
 parent.insertBefore(div, parent.firstChild);
 
@@ -122,5 +146,5 @@ function add_field (name, value) {
    field.type = "hidden";
    field.name = name;
    field.value = value;
-   myform.appendChild(field);
+   addForm.appendChild(field);
 }
