@@ -11,17 +11,20 @@
 
 //**************************************************************************//
 
+// console.log("MB-Import-From-Amazon UserScript");
+
 // The script only runs on 'Music' pages
 var nav = document.getElementById('nav-subnav');
 var category = nav.getElementsByClassName('nav_a')[0].textContent;
 if (category != "Music")
 {
-   return
+   return;
 }
 
 // Create a form which opens the add release form
 var addForm = document.createElement("form");
 addForm.method="post";
+addForm.target = "blank";
 addForm.action = document.location.protocol + "//musicbrainz.org/release/add";
 addForm.acceptCharset = "UTF-8";
 
@@ -38,7 +41,6 @@ addBtnElem.classList.add("mbbtn");
 addForm.appendChild(addBtnElem);
 
 var div = document.createElement("div");
-// div.classList.add("txtsmall");
 
 var artist = '', album = '', label = '', year = 0, month = 0, day = 0, country = 'XW', type = 'album', discs = 0;
 
@@ -48,18 +50,17 @@ var artist = '', album = '', label = '', year = 0, month = 0, day = 0, country =
 
 // Title of the Album
 // Todo: Use regex to extract ONLY album title
-console.log('album', document.getElementById('btAsinTitle').textContent);
+// console.log('name', document.getElementById('btAsinTitle').textContent);
+add_field("name", document.getElementById('btAsinTitle').textContent);
 
 // Album Artist (Composer)
 // Todo: Loop over <a> tags to find ALL composers
 var title = document.getElementsByClassName('parseasinTitle')[0];
 var albumArtists = title.nextElementSibling.getElementsByTagName('a');
-console.log('artist_credit.names.0.artist.name', albumArtists[0].textContent);
+// console.log('artist_credit.names.0.artist.name', albumArtists[0].textContent);
+add_field("artist_credit.names.0.artist.name", albumArtists[0].textContent);
 
-// Packaging
-console.log("packaging", 'None');
-
-// Misclleaneous Details
+// Date and Label
 var detailsTab = document.getElementById('productDetailsTable');
 var detailsList = detailsTab.getElementsByTagName('li');
 
@@ -67,8 +68,9 @@ var reAudioCD = /Audio CD  \((.*)\)/;
 var reDate = /Original Release Date: (.*)/;
 var reLabel = /Label: (.*)/;
 
-// var reNumDiscs = /Number of Discs: (.*)/;
+var reNumDiscs = /Number of Discs: (.*)/;
 // var reFormat = /Format: (.*)/;
+
 var match = null;
 
 for (var i = 0; i < detailsList.length; ++i)
@@ -78,59 +80,83 @@ for (var i = 0; i < detailsList.length; ++i)
    match = reAudioCD.exec(detailsList[i].textContent);
    if (match)
    {
-      // Parse the date
+      // Todo: Parse (but the format can be anything?)
       console.log("date", match[1]);
-      // console.log("date.year", year);
-      // console.log("date.month", month);
-      // console.log("date.day", day);
    }
 
    match = reDate.exec(detailsList[i].textContent);
    if (match)
    {
-      console.log("date.year", match[1]);
+      // console.log("date.year", match[1]);
+      add_field("date.year", match[1]);
    }
 
    match = reLabel.exec(detailsList[i].textContent);
    if (match)
    {
       console.log("label", match[1]);
+      add_field("labels.0.name", match[1]);
    }
 }
 
 // Tracklist - the real deal
-
 var prodDesc = document.getElementById('productDescription');
-if (prodDesc)
+var trackList = prodDesc.getElementsByClassName('productDescriptionWrapper')[0];
+var tracks = trackList.getElementsByTagName('b');
+
+// Note: Most Indian releases have just 1 disc...
+var discNumber = 0;
+add_field("mediums." + discNumber + ".format", "CD");
+
+for (var i = 0; i < tracks.length; i++)
 {
-   var trackList = prodDesc.getElementsByClassName('productDescriptionWrapper')[0];
-   var tracks = trackList.getElementsByTagName('b');
+   // console.log(tracks[i].textContent, tracks[i].nextSibling.textContent);
 
-   for (var i = 0; i < tracks.length; i++)
+   var reTrack = /(\d+)\.\s+(.*)\s+-\s+(.*)/;
+   var reSingers = /Singers?:\s+(.*)/;
+   var reLyricist = /Lyrics:\s+(.*)/;
+
+   var trackDetails = reTrack.exec(tracks[i].textContent);
+   var trackNumber = i;  // or trackDetails[1];
+   var trackTitle = trackDetails[2];
+   var trackLength = (trackDetails[3]).replace(/[\(\)]/g, "");
+
+   var singers = reSingers.exec(tracks[i].nextSibling.textContent)[1].split(/[,&]/);
+
+   // console.log(trackNumber, trackTitle, trackLength);
+   // console.log(singers);
+
+   add_field("mediums." + discNumber + ".track." + trackNumber + ".name", trackTitle);
+   // console.log("mediums." + discNumber + ".track." + trackNumber + ".name", trackTitle);
+
+   // Loop over all singers, and add them as separate artists
+   for (var j = 0; j < singers.length; j++)
    {
-      // console.log(tracks[i].textContent, tracks[i].nextSibling.textContent);
+      add_field("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".name", singers[j].trim());
+      // console.log("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".name", singers[j].trim());
 
-      var reTrack = /\d+\.\s+(.*)\s+-\s+\(?(.*)\)?/;
-      var reSingers = /Singers?:\s+(.*)/;
-      var reLyricist = /Lyrics:\s+(.*)/;
-
-      var trackDetails = reTrack.exec(tracks[i].textContent);
-
-      // console.log(tracks[i].textContent);
-      // console.log(trackDetails);
-
-      console.log(trackDetails[1], trackDetails[2]);
-
-      var singers = reSingers.exec(tracks[i].nextSibling.textContent)[1].split(/[,&]/);
-
-      for (var j = 0; j < singers.length; j++)
-      {
-         singers[j] = singers[j].trim();
-      }
-
-      console.log(singers);
+      if (j != singers.length - 1)
+         add_field("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".join_phrase", " & ");
    }
+
+   add_field("mediums." + discNumber + ".track." + trackNumber + ".length", trackLength);
+   // console.log("mediums." + discNumber + ".track." + trackNumber + ".length", trackLength);
 }
+
+// Miscellaneous Details
+add_field("type", "Album");
+add_field("type", "Soundtrack");
+add_field("status", "official");
+add_field("packaging", 'None');
+
+add_field("language", "hin");
+add_field("country", "IN");
+// add_field("script", "Jpan");
+
+add_field("edit_note", "Release added using the MB-Import-From-Amazon userscript from page: " + document.location.href);
+
+add_field("urls.0.url", document.location.href);
+add_field("urls.0.link_type", "74");
 
 //////////////////////////////////////////////////////////////////////////////
 
