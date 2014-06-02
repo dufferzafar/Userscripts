@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id             MusicBrainz-Import-from-Amazon
 // @name           MusicBrainz: Import from Amazon
-// @version        0.3
+// @version        0.7
 // @namespace      mb_import_from_amazon
 // @author         dufferZafar
 // @description    Import releases from Amazon
@@ -50,14 +50,12 @@ var artist = '', album = '', label = '', year = 0, month = 0, day = 0, country =
 
 // Title of the Album
 // Todo: Use regex to extract ONLY album title
-// console.log('name', document.getElementById('btAsinTitle').textContent);
 add_field("name", document.getElementById('btAsinTitle').textContent);
 
 // Album Artist (Composer)
 // Todo: Loop over <a> tags to find ALL composers
 var title = document.getElementsByClassName('parseasinTitle')[0];
 var albumArtists = title.nextElementSibling.getElementsByTagName('a');
-// console.log('artist_credit.names.0.artist.name', albumArtists[0].textContent);
 add_field("artist_credit.names.0.artist.name", albumArtists[0].textContent);
 
 // Date and Label
@@ -81,20 +79,18 @@ for (var i = 0; i < detailsList.length; ++i)
    if (match)
    {
       // Todo: Parse (but the format can be anything?)
-      console.log("date", match[1]);
+      // console.log("date", match[1]);
    }
 
    match = reDate.exec(detailsList[i].textContent);
    if (match)
    {
-      // console.log("date.year", match[1]);
       add_field("date.year", match[1]);
    }
 
    match = reLabel.exec(detailsList[i].textContent);
    if (match)
    {
-      console.log("label", match[1]);
       add_field("labels.0.name", match[1]);
    }
 }
@@ -121,26 +117,30 @@ for (var i = 0; i < tracks.length; i++)
    var trackTitle = trackDetails[2];
    var trackLength = (trackDetails[3]).replace(/[\(\)]/g, "");
 
-   var singers = reSingers.exec(tracks[i].nextSibling.textContent)[1].split(/[,&]/);
-
    // console.log(trackNumber, trackTitle, trackLength);
    // console.log(singers);
 
    add_field("mediums." + discNumber + ".track." + trackNumber + ".name", trackTitle);
    // console.log("mediums." + discNumber + ".track." + trackNumber + ".name", trackTitle);
 
-   // Loop over all singers, and add them as separate artists
-   for (var j = 0; j < singers.length; j++)
-   {
-      add_field("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".name", singers[j].trim());
-      // console.log("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".name", singers[j].trim());
-
-      if (j != singers.length - 1)
-         add_field("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".join_phrase", " & ");
-   }
-
    add_field("mediums." + discNumber + ".track." + trackNumber + ".length", trackLength);
    // console.log("mediums." + discNumber + ".track." + trackNumber + ".length", trackLength);
+
+   var t = tracks[i].nextSibling;
+   if (t.tagName.toLowerCase() == 'i')
+   {
+      var singers = reSingers.exec(t.textContent)[1].split(/[,&]/);
+
+      // Loop over all singers, and add them as separate artists
+      for (var j = 0; j < singers.length; j++)
+      {
+         add_field("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".name", singers[j].trim());
+         // console.log("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".name", singers[j].trim());
+
+         if (j != singers.length - 1)
+            add_field("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".join_phrase", " & ");
+      }
+   }
 }
 
 // Miscellaneous Details
