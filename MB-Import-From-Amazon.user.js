@@ -104,13 +104,14 @@ var tracks = trackList.getElementsByTagName('b');
 var discNumber = 0;
 add_field("mediums." + discNumber + ".format", "CD");
 
+// Some Regexes
+var reTrack = /(\d+)\.\s+(.*)\s+-\s+(.*)/;
+var reSingers = /Singers?:\s+(.*)/;
+var reLyricist = /Lyrics:\s+(.*)/;
+
 for (var i = 0; i < tracks.length; i++)
 {
    // console.log(tracks[i].textContent, tracks[i].nextSibling.textContent);
-
-   var reTrack = /(\d+)\.\s+(.*)\s+-\s+(.*)/;
-   var reSingers = /Singers?:\s+(.*)/;
-   var reLyricist = /Lyrics:\s+(.*)/;
 
    var trackDetails = reTrack.exec(tracks[i].textContent);
    var trackNumber = i;  // or trackDetails[1];
@@ -137,8 +138,10 @@ for (var i = 0; i < tracks.length; i++)
          add_field("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".name", singers[j].trim());
          // console.log("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".name", singers[j].trim());
 
-         if (j != singers.length - 1)
-            add_field("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".join_phrase", " & ");
+         var join_phrase = (j != artists.length - 1) ? (j == artists.length - 2) ? " & " : ", " : "";
+
+         if (j != artists.length - 1)
+            add_field("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".join_phrase", join_phrase);
       }
    }
 }
