@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id             MusicBrainz-Import-from-Amazon
 // @name           MusicBrainz: Import from Amazon
-// @version        0.7
+// @version        0.8
 // @namespace      mb_import_from_amazon
 // @author         dufferZafar
 // @description    Import releases from Amazon
@@ -29,10 +29,10 @@ addForm.action = document.location.protocol + "//musicbrainz.org/release/add";
 addForm.acceptCharset = "UTF-8";
 
 // Todo: Make the button feel like a part of Amazon
-// var btnCSS = document.createElement("style");
-// btnCSS.type = "text/css";
-// btnCSS.innerHTML = ".mbbtn {background-color: #C0DBF2}";
-// document.body.appendChild(btnCSS);
+var btnCSS = document.createElement("style");
+btnCSS.type = "text/css";
+btnCSS.innerHTML = ".mbbtn {border: 1px solid #6DAEE1; cursor: pointer; border-radius: 4px; padding: 10px 15px; margin-bottom: -10x; width: 100%; background: #C9E1F4;} .mbbtn:hover {background: #B2D3ED}"
+document.body.appendChild(btnCSS);
 
 var addBtnElem = document.createElement("input");
 addBtnElem.type = "submit";
@@ -138,9 +138,9 @@ for (var i = 0; i < tracks.length; i++)
          add_field("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".name", singers[j].trim());
          // console.log("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".name", singers[j].trim());
 
-         var join_phrase = (j != artists.length - 1) ? (j == artists.length - 2) ? " & " : ", " : "";
+         var join_phrase = (j != singers.length - 1) ? (j == singers.length - 2) ? " & " : ", " : "";
 
-         if (j != artists.length - 1)
+         if (j != singers.length - 1)
             add_field("mediums." + discNumber + ".track." + trackNumber + ".artist_credit.names." + j + ".join_phrase", join_phrase);
       }
    }
