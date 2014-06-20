@@ -13,10 +13,10 @@
 
 // console.log("MB-Import-From-Amazon UserScript");
 
-// The script only runs on 'Music' pages
+// The script only runs on 'CDs & Vinyl' pages
 var nav = document.getElementById('nav-subnav');
 var category = nav.getElementsByClassName('nav_a')[0].textContent;
-if (category != "Music")
+if (category != "CDs & Vinyl")
 {
    return;
 }
