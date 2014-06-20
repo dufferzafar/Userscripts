@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        MusicBrainz: Import from iTunes
 // @description Import releases from iTunes
-// @version     2014-02-22
+// @version     2014-06-21
 // @author      Original by Stars, edited by dufferZafar
 // @namespace   http://userscripts.org/users/41307
 //
@@ -26,6 +26,24 @@ mysubmit.type = "submit";
 mysubmit.value = "Add to MusicBrainz";
 mysubmit.classList.add("mbBtn");
 myform.appendChild(mysubmit);
+
+// Add a link to download artwork
+var linkCSS = document.createElement("style");
+linkCSS.type = "text/css";
+linkCSS.innerHTML = ".artLink {float: right; margin-top: -30px; margin-right: 20px;}"
+document.body.appendChild(linkCSS);
+
+var left = document.getElementById('left-stack');
+var art = left.getElementsByTagName('img')[0];
+var viewBtn = left.getElementsByClassName('view-in-itunes')[0];
+var artLink = document.createElement("a");
+
+artLink.innerHTML = "Artwork";
+artLink.target = "blank";
+artLink.href = art.src.replace(/170x170/g, "600x600");
+artLink.download = ""
+artLink.classList.add("artLink");
+viewBtn.parentNode.insertBefore(artLink, viewBtn.nextSibling);
 
 var div = document.createElement("div");
 
