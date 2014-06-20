@@ -104,7 +104,7 @@ add_field("language", "hin");
 add_field("country", "IN");
 // add_field("script", "");
 
-add_field("edit_note", "Release added using the MB-Import-From-TSeries userscript from page: " + document.location.href);
+add_field("edit_note", "Release added using the MB-Import-From-TSeries userscript from page: " + document.location.href + " Sadly, the T-Series website does not contain track lengths.");
 
 add_field("urls.0.url", document.location.href);
 add_field("urls.0.link_type", "74");
