@@ -1,7 +1,26 @@
 ## UserScripts
 
+* [MusicBrainz: Import from iTunes](#itunes)
 * [MusicBrainz: Import from Amazon](#amazon)
 * [MusicBrainz: Import from T-Series](#tseries)
+
+## <a name="itunes"></a> MusicBrainz: Import from iTunes
+
+Import album data from iTunes to add a new release on MusicBrainz.
+
+[![Install](https://raw.github.com/jerone/UserScripts/master/_resources/Install-button.jpg)](https://github.com/dufferZafar/Userscripts/raw/master/MB-Import-From-iTunes.user.js)
+
+### Description
+
+The script adds a button on iTunes album pages which allows you to create a import that release on MusicBrainz.
+
+Note: This script was originally created by [Stars](http://userscripts.org/users/41307). I have edited it to add features like: Better button style, multiple artist support and a link to a large sized cover art of the album.
+
+P.S: I use [fnd.io](https://fnd.io/) to search releases on iTunes. It is a great site, and I wish there were sites like it for other music databases too.
+
+### Todo: 
+
+* Add a check to see if the release is already on MusicBrainz.
 
 ## <a name="amazon"></a> MusicBrainz: Import from Amazon
 
