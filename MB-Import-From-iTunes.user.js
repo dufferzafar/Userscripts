@@ -84,8 +84,19 @@ function callbackFunction(req) {
          }
 
          add_field("mediums." + discno + ".track." + trackno + ".name", trackname);
-         add_field("mediums." + discno + ".track." + trackno + ".artist_credit.names.0.name", r.results[i].artistName);
          add_field("mediums." + discno + ".track." + trackno + ".length", r.results[i].trackTimeMillis);
+
+         var artists = r.results[i].artistName.split(/[,&]/);
+         for (var j = 0; j < artists.length; j++)
+         {
+            add_field("mediums." + discno + ".track." + trackno + ".artist_credit.names." + j + ".name", artists[j].trim());
+
+            var join_phrase = (j != artists.length - 1) ? (j == artists.length - 2) ? " & " : ", " : "";
+
+            if (j != artists.length - 1)
+               add_field("mediums." + discno + ".track." + trackno + ".artist_credit.names." + j + ".join_phrase", join_phrase);
+         }
+
       }
    }
 
@@ -105,7 +116,8 @@ function callbackFunction(req) {
    //add_field("language", "jpn");
    //add_field("script", "Jpan");
    add_field("type", type);
-   add_field("edit_note", document.location.href);
+   add_field("edit_note", "Release added using the MB-Import-From-iTunes userscript from page: " + document.location.href);
+
    add_field("urls.0.link_type", "74");
    add_field("urls.0.url", document.location.href);
 
