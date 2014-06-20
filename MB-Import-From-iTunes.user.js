@@ -2,7 +2,7 @@
 // @name        MusicBrainz: Import from iTunes
 // @description Import releases from iTunes
 // @version     2014-02-22
-// @author      -
+// @author      Original by Stars, edited by dufferZafar
 // @namespace   http://userscripts.org/users/41307
 //
 // @include     *://itunes.apple.com/*
@@ -12,18 +12,22 @@
 
 var myform = document.createElement("form");
 myform.method="post";
+myform.target = "blank";
 myform.action = document.location.protocol + "//musicbrainz.org/release/add";
 myform.acceptCharset = "UTF-8";
-mysubmit = document.createElement("input");
+
+var btnCSS = document.createElement("style");
+btnCSS.type = "text/css";
+btnCSS.innerHTML = ".mbBtn {border: 1px solid #ABABAB; cursor: pointer; border-radius: 4px; padding: 10px 15px; margin-top: -50px; background: #F7F7F7; float: right;} .mbBtn:hover {background: #DEDEDE}"
+document.body.appendChild(btnCSS);
+
+var mysubmit = document.createElement("input");
 mysubmit.type = "submit";
 mysubmit.value = "Add to MusicBrainz";
+mysubmit.classList.add("mbBtn");
 myform.appendChild(mysubmit);
 
 var div = document.createElement("div");
-div.style.position = 'absolute';
-div.style.top = 0;
-div.style.right = 0;
-div.style.padding = '10px';
 
 var artist = '', album = '', label = '', year = 0, month = 0, day = 0, country = 'XW', type = 'album', discs = 0;
 
@@ -106,7 +110,7 @@ function callbackFunction(req) {
    add_field("urls.0.url", document.location.href);
 
    div.appendChild(myform);
-   document.body.appendChild(div);
+   document.getElementById('title').appendChild(div);
 }
 
 //////////////////////////////////////////////////////////////////////////////
