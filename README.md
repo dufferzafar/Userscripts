@@ -14,7 +14,13 @@ Import album data from iTunes to add a new release on MusicBrainz.
 
 The script adds a button on iTunes album pages which allows you to create a import that release on MusicBrainz.
 
-Note: This script was originally created by [Stars](http://userscripts.org/users/41307). I have edited it to add features like: Better button style, multiple artist support and a link to a large sized cover art of the album.
+This script was originally created by [Stars](http://userscripts.org/users/41307).
+
+I have edited it to add these features:
+
+1. **Better button style** which makes the "Add to MusicBrainz" look good and feel like a part of the iTunes website.
+2. **Multiple artist support** - So multiple artists are added separately with the correct join phrase.
+3. A link to a large sized cover art of the album.
 
 P.S: I use [fnd.io](https://fnd.io/) to search releases on iTunes. It is a great site, and I wish there were sites like it for other music databases too.
 
