@@ -31,20 +31,20 @@ myform.appendChild(mysubmit);
 // Add a link to download artwork
 var linkCSS = document.createElement("style");
 linkCSS.type = "text/css";
-linkCSS.innerHTML = ".artLink {float: right; margin-top: -30px; margin-right: 20px;}"
+linkCSS.innerHTML = ".artLink {margin-top: 10px;}"
 document.body.appendChild(linkCSS);
 
 var left = document.getElementById('left-stack');
 var art = left.getElementsByTagName('img')[0];
+src = art.getAttribute('src-swap-high-dpi');
 var viewBtn = left.getElementsByClassName('view-in-itunes')[0];
-var artLink = document.createElement("a");
 
-artLink.innerHTML = "Artwork";
-artLink.target = "blank";
-artLink.href = art.src.replace(/170x170/g, "600x600");
-artLink.download = ""
+var artLink = document.createElement("p");
+artLink.innerHTML = "Artwork: <a href="+ src.replace(/340x340/g, "600x600")+">600px</a>"+
+									", <a href="+ src.replace(/340x340/g, "1200x1200") +">1200px</a>";
 artLink.classList.add("artLink");
-viewBtn.parentNode.insertBefore(artLink, viewBtn.nextSibling);
+
+viewBtn.parentNode.insertBefore(artLink, viewBtn);
 
 var div = document.createElement("div");
 div.classList.add("right");
