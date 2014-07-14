@@ -132,7 +132,8 @@ function callbackFunction(req) {
 	//add_field("language", "jpn");
 	//add_field("script", "Jpan");
 	add_field("type", type);
-	add_field("edit_note", "Release added using the MB-Import-From-iTunes userscript from page: " + document.location.href);
+	add_field("edit_note", "Imported from: "+ document.location.href +
+						  " using https://bitbucket.org/96187/userscripts/src/HEAD/itunes-importer/");
 	add_field("urls.0.link_type", "74");
 	add_field("urls.0.url", document.location.href);
 
