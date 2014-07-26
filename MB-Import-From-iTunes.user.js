@@ -19,7 +19,14 @@ myform.acceptCharset = "UTF-8";
 // Stylize our button
 var btnCSS = document.createElement("style");
 btnCSS.type = "text/css";
-btnCSS.innerHTML = ".mbBtn {border: 1px solid #ABABAB; cursor: pointer; border-radius: 4px; padding: 10px 15px; margin-top: 25px; margin-right: -150px; background: #F7F7F7;} .mbBtn:hover {background: #DEDEDE}"
+if (document.getElementsByClassName('view-more').length)
+{
+	btnCSS.innerHTML = ".mbBtn {border: 1px solid #ABABAB; cursor: pointer; border-radius: 4px; padding: 10px 15px; margin-top: 25px; margin-right: -150px; background: #F7F7F7;} .mbBtn:hover {background: #DEDEDE}"
+}
+else
+{
+	btnCSS.innerHTML = ".mbBtn {border: 1px solid #ABABAB; cursor: pointer; border-radius: 4px; padding: 10px 15px; background: #F7F7F7;} .mbBtn:hover {background: #DEDEDE}"
+}
 document.body.appendChild(btnCSS);
 
 var mysubmit = document.createElement("input");
@@ -133,7 +140,7 @@ function callbackFunction(req) {
 	//add_field("script", "Jpan");
 	add_field("type", type);
 	add_field("edit_note", "Imported from: "+ document.location.href +
-						  " using https://bitbucket.org/96187/userscripts/src/HEAD/itunes-importer/");
+						  " using https://github.com/dufferzafar/Userscripts/blob/master/MB-Import-From-iTunes.user.js");
 	add_field("urls.0.link_type", "74");
 	add_field("urls.0.url", document.location.href);
 
