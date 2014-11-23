@@ -26,6 +26,8 @@ P.S: I use [fnd.io](https://fnd.io/) to search releases on iTunes. It is a great
 
 ### Todo: 
 
+* Remove all those "View in iTunes" buttons
+* Resize the artist columns
 * Add a check to see if the release is already on MusicBrainz.
 
 ## <a name="amazon"></a> MusicBrainz: Import from Amazon
@@ -40,13 +42,7 @@ The script adds a button on Amazon pages (that contain a music album) which allo
 
 The main aim of creating the script is to facilitate the process of adding Hindi albums from Amazon. So the script has mostly been tested on Hindi album pages of Amazon.
 
-*Note: As Amazon makes changes to its website (which happens frequently) this script might stop functioning.*
-
-### Todo
-
-* Make it work with Digital Music releases like: www.amazon.com/gp/product/B00K0CR61Y/ & www.amazon.com/gp/product/B00J9NKCJI/
-
-* Make it work when *Singers* data is incomplete - http://www.amazon.com/gp/product/B00JOBUWCC/
+*Note: I've stopped using this script as I get all the releases I want on iTunes. Expect no updates.*
 
 ## <a name="tseries"></a> MusicBrainz: Import from TSeries
 
