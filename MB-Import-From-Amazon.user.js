@@ -79,30 +79,23 @@ switch (category)
         break;
 }
 
-var artist = '';
-var album = '';
-var label = '';
-var year = 0;
-var month = 0;
-var day = 0;
-var country = '';
-var type = 'album';
-var discs = 0;
-
-//////////////////////////////////////////////////////////////////////////////
+addInputToForm(form, "status", "official");
+addInputToForm(form, "edit_note", "Release added using the MB-Import-From-Amazon userscript from page: " + document.location.href);
+addInputToForm(form, "urls.0.url", document.location.href);
+addInputToForm(form, "urls.0.link_type", "77");
 
 switch (category)
 {
     case "cd":
         // Title of the Album
         // Todo: Use regex to extract ONLY album title
-        add_field(form, "name", document.getElementById('productTitle').textContent);
+        addInputToForm(form, "name", document.getElementById('productTitle').textContent);
 
         // Album Artist (Composer)
         // Todo: Loop over <a> tags to find ALL composers
         var albumArtists = document.getElementsByClassName('author');
         var albumArtist = albumArtists[0].getElementsByTagName('a');
-        add_field(form, "artist_credit.names.0.name", albumArtist[0].textContent);
+        addInputToForm(form, "artist_credit.names.0.name", albumArtist[0].textContent);
 
         // Date and Label
         var detailsTab = document.getElementById('productDetailsTable');
@@ -121,17 +114,17 @@ switch (category)
                     case "de":
                         var splittedDate = match[1].split(" ");
 
-                        add_field(form, "events.0.date.day", splittedDate[0].replace(/\./, ""));
-                        add_field(form, "events.0.date.month", months[splittedDate[1]]);
-                        add_field(form, "events.0.date.year", splittedDate[2]);
+                        addInputToForm(form, "events.0.date.day", splittedDate[0].replace(/\./, ""));
+                        addInputToForm(form, "events.0.date.month", months[splittedDate[1]]);
+                        addInputToForm(form, "events.0.date.year", splittedDate[2]);
                         break;
 
                     case "com":
                         var splittedDate = match[1].split(" ");
 
-                        add_field(form, "events.0.date.day", splittedDate[1].replace(/,/, ""));
-                        add_field(form, "events.0.date.month", months[splittedDate[0]]);
-                        add_field(form, "events.0.date.year", splittedDate[2]);
+                        addInputToForm(form, "events.0.date.day", splittedDate[1].replace(/,/, ""));
+                        addInputToForm(form, "events.0.date.month", months[splittedDate[0]]);
+                        addInputToForm(form, "events.0.date.year", splittedDate[2]);
                         break;
                 }
             }
@@ -140,13 +133,13 @@ switch (category)
 
             if (match)
             {
-                add_field(form, "labels.0.name", match[1]);
+                addInputToForm(form, "labels.0.name", match[1]);
             }
         }
 
         var medium = 0;
         var track = 0;
-        add_field(form, "mediums.0.format", "CD");
+        addInputToForm(form, "mediums.0.format", "CD");
 
         // Amazon has more than one track listing...
         if (document.getElementById("dmusic_tracklist_content")) 
@@ -159,15 +152,15 @@ switch (category)
                 {
                     medium++;
                     track = 0;
-                    add_field(form, "mediums." + medium + ".format", "CD");
+                    addInputToForm(form, "mediums." + medium + ".format", "CD");
                     continue;
                 }
 
                 var trackDetails = tracklist[i].getElementsByTagName("td");
                             
-                add_field(form, "mediums." + medium + ".track." + track + ".number", trackDetails[0].getElementsByClassName("TrackNumber")[0].textContent);
-                add_field(form, "mediums." + medium + ".track." + track + ".name", trackDetails[1].getElementsByClassName("TitleLink")[0].textContent);
-                add_field(form, "mediums." + medium + ".track." + track + ".length", trackDetails[2].getElementsByTagName("span")[0].textContent.trim());
+                addInputToForm(form, "mediums." + medium + ".track." + track + ".number", trackDetails[0].getElementsByClassName("TrackNumber")[0].textContent);
+                addInputToForm(form, "mediums." + medium + ".track." + track + ".name", trackDetails[1].getElementsByClassName("TitleLink")[0].textContent);
+                addInputToForm(form, "mediums." + medium + ".track." + track + ".length", trackDetails[2].getElementsByTagName("span")[0].textContent.trim());
 
                 track++;
             }
@@ -182,48 +175,28 @@ switch (category)
                 {
                     medium++;
                     track = 0;
-                    add_field(form, "mediums." + medium + ".format", "CD");
+                    addInputToForm(form, "mediums." + medium + ".format", "CD");
                     continue;
                 }
-                
-                var trackDetails = tracklist[i].split(". ");
-                alert(trackDetails);
-                console.log(trackDetails[0]);
-                console.log(trackDetails[1]);
 
-                add_field(form, "mediums." + medium + ".track." + track + ".number", trackDetails[0]);
-                add_field(form, "mediums." + medium + ".track." + track + ".name", trackDetails[1]);
+                var trackDetails = tracklist[i].textContent.split(". ");
+
+                addInputToForm(form, "mediums." + medium + ".track." + track + ".number", trackDetails[0].trim());
+                addInputToForm(form, "mediums." + medium + ".track." + track + ".name", trackDetails[1].trim());
             
                 track++;
             }
         }
-
-        
         break;
 }
 
-// Miscellaneous Details
-add_field(form, "status", "official");
-
-add_field(form, "edit_note", "Release added using the MB-Import-From-Amazon userscript from page: " + document.location.href);
-
-add_field(form, "urls.0.url", document.location.href);
-add_field(form, "urls.0.link_type", "77");
-
-//////////////////////////////////////////////////////////////////////////////
-
-
-
-
-//////////////////////////////////////////////////////////////////////////////
-
-function add_field(form123, name, value) 
+function addInputToForm(form, name, value) 
 {
-    var field = document.createElement("input");
+    var input = document.createElement("input");
 
-    field.type = "hidden";
-    field.name = name;
-    field.value = value;
+    input.type = "hidden";
+    input.name = name;
+    input.value = value;
 
-    form123.appendChild(field);
+    form.appendChild(input);
 }
