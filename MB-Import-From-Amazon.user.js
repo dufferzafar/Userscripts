@@ -13,9 +13,6 @@
 
 // configuration
 var navigationItem = document.getElementById('nav-subnav').getElementsByClassName('nav-a')[0].textContent;
-var domain = "";
-var category = "";
-var months;
 var monthsDe = {"Januar": 1, "Februar": 2, "März": 3, "April": 4, "Mai": 5, "Juni": 6, "Juli": 7, "August": 8, "September": 9, "Oktober": 10, "November": 11, "Dezember": 12};
 var monthsCom = {"January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6, "July": 7, "August": 8, "September": 9, "October": 10, "November": 11, "December": 12}
 var regexReleaseDate = /Audio CD  \((.*)\)/;
@@ -25,45 +22,47 @@ switch (navigationItem)
 {
     // amazon.com
     case "CDs & Vinyl":
-        months = monthsCom;
-        domain = 'com';
-        category = "cd";
+        var months = monthsCom;
+        var domain = 'com';
+        var category = "cd";
+        var disc = "Disc";
         var regexNumDiscs = /Number of Discs: (.*)/;
         break;
 
     case "Digital Music":
-        months = monthsCom;
-        domain = 'com';
-        category = "mp3";
+        var domain = 'com';
+        var category = "mp3";
         break;
 
     // amazon.de
     case "Musik-CDs & Vinyl":
-        months = monthsDe;
-        domain = 'de';
-        category = "cd";
+        var months = monthsDe;
+        var domain = 'de';
+        var category = "cd";
+        var disc = "Disk";
         var regexNumDiscs = /Anzahl Disks\/Tonträger: (.*)/;
         break;
 
     case "Musik-Downloads":
-        months = monthsDe;
-        domain = 'de';
-        category = "mp3";
+        var domain = 'de';
+        var category = "mp3";
         break;
 
     // amazon.ca (in english)
     case "Music":
-        months = monthsCom;
-        domain = 'ca';
-        category = "cd";
+        var months = monthsCom;
+        var domain = 'ca';
+        var category = "cd";
+        var disc = "Disc";
         var regexNumDiscs = /Number of Discs: (.*)/;
         break;
 
     // amazon.ca (in french)
     case "Musique":
-        months = monthsCom;
-        domain = 'ca';
-        category = "cd";
+        var months = monthsCom;
+        var domain = 'ca';
+        var category = "cd";
+        var disc = "Disc";
         var regexNumDiscs = /Number of Discs: (.*)/;
         break;
 
@@ -184,10 +183,10 @@ switch (category)
         else if (document.getElementById("dmusic_tracklist_player"))
         {
             var tracklist = document.getElementById("dmusic_tracklist_player").getElementsByClassName("a-row");
-            
+
             for (var i = 1; i < tracklist.length; i++)
             {
-                if (tracklist[i].textContent.trim() == "Disk: " + (medium + 2))
+                if (tracklist[i].textContent.trim() == disc + ": " + (medium + 2))
                 {
                     medium++;
                     track = 0;
