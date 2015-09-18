@@ -3,7 +3,7 @@
 // @name           MusicBrainz: Import from Amazon
 // @version        0.8
 // @namespace      mb_import_from_amazon
-// @author         dufferZafar
+// @author         dufferZafar & Gore
 // @description    Import releases from Amazon
 // @include        *://www.amazon.*
 // @run-at         document-end
@@ -11,95 +11,152 @@
 
 //**************************************************************************//
 
-// console.log("MB-Import-From-Amazon UserScript");
+// Configuration
+var navigationItem = document.getElementById('nav-subnav').getElementsByClassName('nav-a')[0].textContent;
+var domain = "";
+var category = "";
+var months;
+var monthsDe = {"Januar": 1, "Februar": 2, "Juli": 7};
+var monthsCom = {"January": 1, "Juli": 7};
+var regexAudioCD = /Audio CD  \((.*)\)/;
+var regexLabel = /Label: (.*)/;
 
-// The script only runs on 'CDs & Vinyl' pages
-var nav = document.getElementById('nav-subnav');
-var category = nav.getElementsByClassName('nav_a')[0].textContent;
-if (category != "CDs & Vinyl")
+switch (navigationItem)
 {
-   return;
+    // amazon.com
+    case "CDs & Vinyl":
+        domain = 'com';
+        category = "cd";
+        var regexNumDiscs = /Number of Discs: (.*)/;
+        break;
+
+    case "Digital Music":
+        domain = 'com';
+        category = "mp3";
+        break;
+
+    // amazon.de
+    case "Musik-CDs & Vinyl":
+        months = monthsDe;
+        domain = 'de';
+        category = "cd";
+        var regexNumDiscs = /Anzahl Disks\/Tonträger: (.*)/;
+        break;
+
+    case "Musik-Downloads":
+        domain = 'de';
+        category = "mp3";
+        break;
+
+    default:
+        return;
 }
 
 // Create a form which opens the add release form
 var addForm = document.createElement("form");
 addForm.method="post";
-addForm.target = "blank";
-addForm.action = document.location.protocol + "//musicbrainz.org/release/add";
+addForm.target = "_blank";
+addForm.action = "https://musicbrainz.org/release/add";
 addForm.acceptCharset = "UTF-8";
 
-// Todo: Make the button feel like a part of Amazon
 var btnCSS = document.createElement("style");
 btnCSS.type = "text/css";
-btnCSS.innerHTML = ".mbbtn {border: 1px solid #6DAEE1; cursor: pointer; border-radius: 4px; padding: 10px 15px; margin-bottom: -10x; width: 100%; background: #C9E1F4;} .mbbtn:hover {background: #B2D3ED}"
+btnCSS.innerHTML = ".mbBtn {border: 1px solid #6DAEE1; cursor: pointer; border-radius: 4px; padding: 10px 15px; margin-bottom: -10x; width: 100%; background: #C9E1F4;} .mbBtn:hover {background: #B2D3ED}"
 document.body.appendChild(btnCSS);
 
 var addBtnElem = document.createElement("input");
 addBtnElem.type = "submit";
 addBtnElem.value = "Add release to MusicBrainz";
-addBtnElem.classList.add("mbbtn");
+addBtnElem.classList.add("mbBtn");
 addForm.appendChild(addBtnElem);
 
 var div = document.createElement("div");
 
-var artist = '', album = '', label = '', year = 0, month = 0, day = 0, country = 'XW', type = 'album', discs = 0;
+var artist = '';
+var album = '';
+var label = '';
+var year = 0;
+var month = 0;
+var day = 0;
+var country = '';
+var type = 'album';
+var discs = 0;
 
 //////////////////////////////////////////////////////////////////////////////
 
-// Script Begins
-
-// Title of the Album
-// Todo: Use regex to extract ONLY album title
-add_field("name", document.getElementById('btAsinTitle').textContent);
-
-// Album Artist (Composer)
-// Todo: Loop over <a> tags to find ALL composers
-var title = document.getElementsByClassName('parseasinTitle')[0];
-var albumArtists = title.nextElementSibling.getElementsByTagName('a');
-add_field("artist_credit.names.0.artist.name", albumArtists[0].textContent);
-
-// Date and Label
-var detailsTab = document.getElementById('productDetailsTable');
-var detailsList = detailsTab.getElementsByTagName('li');
-
-var reAudioCD = /Audio CD  \((.*)\)/;
-var reDate = /Original Release Date: (.*)/;
-var reLabel = /Label: (.*)/;
-
-var reNumDiscs = /Number of Discs: (.*)/;
-// var reFormat = /Format: (.*)/;
-
-var match = null;
-
-for (var i = 0; i < detailsList.length; ++i)
+switch (category)
 {
-   // console.log(detailsList[i].textContent);
+    case "cd":
+        // Title of the Album
+        // Todo: Use regex to extract ONLY album title
+        add_field("name", document.getElementById('productTitle').textContent);
 
-   match = reAudioCD.exec(detailsList[i].textContent);
-   if (match)
-   {
-      // Todo: Parse (but the format can be anything?)
-      // console.log("date", match[1]);
-   }
+        // Album Artist (Composer)
+        // Todo: Loop over <a> tags to find ALL composers
+        var albumArtists = document.getElementsByClassName('author');
+        var albumArtist = albumArtists[0].getElementsByTagName('a');
+        add_field("artist_credit.names.0.artist.name", albumArtist[0].textContent);
 
-   match = reDate.exec(detailsList[i].textContent);
-   if (match)
-   {
-      add_field("date.year", match[1]);
-   }
+        // Date and Label
+        var detailsTab = document.getElementById('productDetailsTable');
+        var detailsList = detailsTab.getElementsByTagName('li');
+    
 
-   match = reLabel.exec(detailsList[i].textContent);
-   if (match)
-   {
-      add_field("labels.0.name", match[1]);
-   }
+        // var reFormat = /Format: (.*)/;
+
+        var match = null;
+
+        for (var i = 0; i < detailsList.length; ++i)
+        {
+            console.log(detailsList[i].textContent);
+            
+            match = regexAudioCD.exec(detailsList[i].textContent);
+
+            if (match)
+            {
+                switch (domain)
+                {
+                    case "de":
+                        var splittedDate = match[1].split(" ");
+                       
+                        add_field("events.0.date.day", splittedDate[0].substr(0, 2));
+                        add_field("events.0.date.month", months[splittedDate[1]]);
+                        add_field("events.0.date.year", splittedDate[2]);
+                        break;
+
+                    case "com":
+                        var splittedDate = match[1].split(" ");
+                       
+                        add_field("events.0.date.day", splittedDate[1].substr(0, 2));
+                        add_field("events.0.date.month", months[splittedDate[0]]);
+                        add_field("events.0.date.year", splittedDate[2]);
+                }
+            }
+
+            match = regexLabel.exec(detailsList[i].textContent);
+
+            if (match)
+            {
+                add_field("labels.0.name", match[1]);
+            }
+
+            match = regexLabel.exec(detailsList[i].textContent);
+
+            if (match)
+            {
+                add_field("labels.0.name", match[1]);
+            }
+        }
+        break;
 }
 
+
+/*
 // Tracklist - the real deal
 var prodDesc = document.getElementById('productDescription');
 var trackList = prodDesc.getElementsByClassName('productDescriptionWrapper')[0];
 var tracks = trackList.getElementsByTagName('b');
-
+alert("666");
 // Note: Most Indian releases have just 1 disc...
 var discNumber = 0;
 add_field("mediums." + discNumber + ".format", "CD");
@@ -145,35 +202,44 @@ for (var i = 0; i < tracks.length; i++)
       }
    }
 }
+*/
 
 // Miscellaneous Details
-add_field("type", "Album");
-add_field("type", "Soundtrack");
+//add_field("type", "Album");
+//add_field("type", "Soundtrack");
 add_field("status", "official");
-add_field("packaging", 'None');
+//add_field("packaging", 'None');
 
-add_field("language", "hin");
-add_field("country", "IN");
+//add_field("language", "hin");
+//add_field("country", "IN");
 // add_field("script", "Jpan");
 
 add_field("edit_note", "Release added using the MB-Import-From-Amazon userscript from page: " + document.location.href);
 
 add_field("urls.0.url", document.location.href);
-add_field("urls.0.link_type", "74");
+add_field("urls.0.link_type", "77");
 
 //////////////////////////////////////////////////////////////////////////////
 
 // Append our button to the body
 div.appendChild(addForm);
-var parent = document.getElementsByClassName('buyingDetailsGrid')[0];
-parent.insertBefore(div, parent.firstChild);
+
+if (document.getElementById('tellAFriendBox_feature_div'))
+{   
+
+    document.getElementById('tellAFriendBox_feature_div').appendChild(div);
+}
+
 
 //////////////////////////////////////////////////////////////////////////////
 
-function add_field (name, value) {
-   var field = document.createElement("input");
-   field.type = "hidden";
-   field.name = name;
-   field.value = value;
-   addForm.appendChild(field);
+function add_field(name, value) 
+{
+    var field = document.createElement("input");
+
+    field.type = "hidden";
+    field.name = name;
+    field.value = value;
+
+    addForm.appendChild(field);
 }
