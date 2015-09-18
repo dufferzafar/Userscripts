@@ -51,6 +51,22 @@ switch (navigationItem)
         category = "mp3";
         break;
 
+    // amazon.ca (in english)
+    case "Music":
+        months = monthsCom;
+        domain = 'ca';
+        category = "cd";
+        var regexNumDiscs = /Number of Discs: (.*)/;
+        break;
+
+    // amazon.ca (in french)
+    case "Musique":
+        months = monthsCom;
+        domain = 'ca';
+        category = "cd";
+        var regexNumDiscs = /Number of Discs: (.*)/;
+        break;
+
     default:
         return;
 }
