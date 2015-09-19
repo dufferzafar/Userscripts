@@ -1,3 +1,3 @@
-alert("hallo");
+alert("nicht im ordner");
 
-var lala = "KAKA";
+var lala = "nicht im ordner";

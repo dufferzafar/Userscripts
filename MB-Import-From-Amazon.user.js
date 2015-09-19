@@ -8,6 +8,7 @@
 // @include        *://www.amazon.*
 // @run-at         document-end
 // @require        MB-Import-From-Amazon/form.js
+// @require        form.js
 // ==/UserScript==
 
 //**************************************************************************//

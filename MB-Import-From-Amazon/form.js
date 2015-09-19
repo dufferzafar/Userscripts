@@ -1,3 +1,3 @@
-alert("hallo");
+alert("im ordner");
 
-var lala = "KAKA";
+var lala = "im ordner";
