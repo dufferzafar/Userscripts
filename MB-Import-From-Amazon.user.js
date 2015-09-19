@@ -7,7 +7,7 @@
 // @description    Import releases from Amazon
 // @include        *://www.amazon.*
 // @run-at         document-end
-// @require        MB-Import-From-Amazon/form.js
+// @require        MB-Import-From-Amazon\form.js
 // ==/UserScript==
 
 //**************************************************************************//
