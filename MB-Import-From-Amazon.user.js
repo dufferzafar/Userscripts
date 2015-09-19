@@ -1,4 +1,4 @@
-// ==UserScript==
+Ôªø// ==UserScript==
 // @id             MusicBrainz-Import-from-Amazon
 // @name           MusicBrainz: Import from Amazon
 // @version        0.9
@@ -14,7 +14,7 @@
 alert(lala);
 // configuration
 var navigationItem = document.getElementById('nav-subnav').getElementsByClassName('nav-a')[0].textContent;
-var monthsDe = {"Januar": 1, "Februar": 2, "M‰rz": 3, "April": 4, "Mai": 5, "Juni": 6, "Juli": 7, "August": 8, "September": 9, "Oktober": 10, "November": 11, "Dezember": 12};
+var monthsDe = {"Januar": 1, "Februar": 2, "M√§rz": 3, "April": 4, "Mai": 5, "Juni": 6, "Juli": 7, "August": 8, "September": 9, "Oktober": 10, "November": 11, "Dezember": 12};
 var monthsCom = {"January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6, "July": 7, "August": 8, "September": 9, "October": 10, "November": 11, "December": 12}
 var regexReleaseDate = /Audio CD  \((.*)\)/;
 var regexReleaseLabel = /Label: (.*)/;
@@ -41,7 +41,7 @@ switch (navigationItem)
         var domain = 'de';
         var category = "cd";
         var disc = "Disk";
-        var regexNumDiscs = /Anzahl Disks\/Tontr‰ger: (.*)/;
+        var regexNumDiscs = /Anzahl Disks\/Tontr√§ger: (.*)/;
         break;
 
     case "Musik-Downloads":
