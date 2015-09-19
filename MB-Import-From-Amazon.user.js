@@ -1,16 +1,17 @@
 // ==UserScript==
 // @id             MusicBrainz-Import-from-Amazon
 // @name           MusicBrainz: Import from Amazon
-// @version        0.8
+// @version        0.9
 // @namespace      mb_import_from_amazon
 // @author         dufferZafar & Gore
 // @description    Import releases from Amazon
 // @include        *://www.amazon.*
 // @run-at         document-end
+// @require        MB-Import-From-Amazon/form.js
 // ==/UserScript==
 
 //**************************************************************************//
-
+alert(lala);
 // configuration
 var navigationItem = document.getElementById('nav-subnav').getElementsByClassName('nav-a')[0].textContent;
 var monthsDe = {"Januar": 1, "Februar": 2, "März": 3, "April": 4, "Mai": 5, "Juni": 6, "Juli": 7, "August": 8, "September": 9, "Oktober": 10, "November": 11, "Dezember": 12};
@@ -81,27 +82,56 @@ btnCSS.type = "text/css";
 btnCSS.innerHTML = ".mbBtn {border: 1px solid #6DAEE1; cursor: pointer; border-radius: 4px; padding: 10px 15px; margin-bottom: -10x; width: 100%; background: #C9E1F4;} .mbBtn:hover {background: #B2D3ED}"
 document.body.appendChild(btnCSS);
 
-var addBtnElem = document.createElement("input");
-addBtnElem.type = "submit";
-addBtnElem.value = "Add release to MusicBrainz";
-addBtnElem.classList.add("mbBtn");
-form.appendChild(addBtnElem);
+var formSelectPrimaryType = document.createElement("select");
+formSelectPrimaryType.name = "type";
+
+var formOption = document.createElement("option");
+formOption.text = "";
+formSelectPrimaryType.add(formOption);
+
+formOption = document.createElement("option");
+formOption.text = "spokenword";
+formSelectPrimaryType.add(formOption);
+
+formOption = document.createElement("option");
+formOption.text = "Single";
+formSelectPrimaryType.add(formOption);
+
+formOption = document.createElement("option");
+formOption.text = "EP";
+formSelectPrimaryType.add(formOption);
+
+formOption = document.createElement("option");
+formOption.text = "Broadcast";
+formSelectPrimaryType.add(formOption);
+
+formOption = document.createElement("option");
+formOption.text = "Other";
+formSelectPrimaryType.add(formOption);
+
+form.appendChild(formSelectPrimaryType);
+
+var formSelectSecondaryType = document.createElement("select");
+formSelectSecondaryType.name = "type";
+
+formOption = document.createElement("option");
+formOption.text = "Spokenword";
+formOption.value = "spokenword";
+formSelectSecondaryType.add(formOption);
+
+form.appendChild(formSelectSecondaryType);
+
+var formSubmit = document.createElement("input");
+formSubmit.type = "submit";
+formSubmit.value = "Add release to MusicBrainz";
+formSubmit.classList.add("mbBtn");
+form.appendChild(formSubmit);
 
 switch (category)
 {
     case "cd":
         document.getElementById('tellAFriendBox_feature_div').appendChild(form);
-        break;
-}
 
-addInputToForm(form, "status", "official");
-addInputToForm(form, "edit_note", "Release added using the MB-Import-From-Amazon userscript from page: " + document.location.href);
-addInputToForm(form, "urls.0.url", document.location.href);
-addInputToForm(form, "urls.0.link_type", "77");
-
-switch (category)
-{
-    case "cd":
         // Title of the Album
         // Todo: Use regex to extract ONLY album title
         addInputToForm(form, "name", document.getElementById('productTitle').textContent);
@@ -204,6 +234,11 @@ switch (category)
         }
         break;
 }
+
+addInputToForm(form, "status", "official");
+addInputToForm(form, "edit_note", "Release added using the MB-Import-From-Amazon userscript from page: " + document.location.href);
+addInputToForm(form, "urls.0.url", document.location.href);
+addInputToForm(form, "urls.0.link_type", "77");
 
 function addInputToForm(form, name, value) 
 {
