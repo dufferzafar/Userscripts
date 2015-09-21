@@ -2,7 +2,7 @@
 // @id             MusicBrainz-Import-from-Amazon
 // @name           MusicBrainz: Import from Amazon
 // @version        0.8
-// @namespace      mb_import_from_amazon
+// @namespace      http://github.com/dufferzafar/Userscripts
 // @author         dufferZafar
 // @description    Import releases from Amazon
 // @include        *://www.amazon.*
