@@ -15,6 +15,7 @@ var navigationItem = document.getElementById('nav-subnav').getElementsByClassNam
 var monthsDe = {"Januar": 1, "Februar": 2, "März": 3, "April": 4, "Mai": 5, "Juni": 6, "Juli": 7, "August": 8, "September": 9, "Oktober": 10, "November": 11, "Dezember": 12};
 var monthsCom = {"January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6, "July": 7, "August": 8, "September": 9, "October": 10, "November": 11, "December": 12}
 var monthsCoUk = {"Jan.": 1, "Feb.": 2, "March": 3, "April": 4, "May": 5, "June": 6, "July": 7, "Aug.": 8, "Sept.": 9, "Oct.": 10, "Nov.": 11, "Dec": 12}
+var monthsCaFrench = {"janvier": 1, "février": 2, "mars": 3, "avril": 4, "mai": 5, "juin": 6, "juillet": 7, "août": 8, "septembre": 9, "octobre": 10, "novembre": 11, "décembre": 12}
 var regexReleaseDate = /Audio CD  \((.*)\)/;
 var regexReleaseLabel = /Label: (.*)/;
 
@@ -61,7 +62,7 @@ switch (navigationItem) {
             // amazon.ca (in english)
             case "www.amazon.ca":
                 var months = monthsCoUk;
-                var domain = 'ca';
+                var domain = 'caEnglish';
                 var category = "cd";
                 var disc = "Disc";
                 var regexNumDiscs = /Number of Discs: (.*)/;
@@ -72,8 +73,8 @@ switch (navigationItem) {
     // amazon.ca (in french)
     case "Musique":
         // todo: months in french
-        var months = monthsCom;
-        var domain = 'ca';
+        var months = monthsCaFrench;
+        var domain = 'caFrench';
         var category = "cd";
         var disc = "Disc";
         var regexNumDiscs = /Number of Discs: (.*)/;
@@ -162,11 +163,19 @@ switch (category) {
                         createInput(form, "hidden", "events.0.date.year", splittedDate[2]);
                         break;
 
-                    case "ca":
+                    case "caEnglish":
                         var splittedDate = match[1].split(" ");
 
                         createInput(form, "hidden", "events.0.date.day", splittedDate[1]);
                         createInput(form, "hidden", "events.0.date.month", months[splittedDate[0]]);
+                        createInput(form, "hidden", "events.0.date.year", splittedDate[2]);
+                        break;
+
+                    case "caFrench":
+                        var splittedDate = match[1].split(" ");
+
+                        createInput(form, "hidden", "events.0.date.day", splittedDate[0]);
+                        createInput(form, "hidden", "events.0.date.month", months[splittedDate[1]]);
                         createInput(form, "hidden", "events.0.date.year", splittedDate[2]);
                         break;
                 }
