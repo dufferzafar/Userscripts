@@ -7,19 +7,15 @@
 // @description    Import releases from Amazon
 // @include        *://www.amazon.*
 // @run-at         document-end
-// @require        MB-Import-From-Amazon/form.js
-// @require        form.js
 // ==/UserScript==
 
-//**************************************************************************//
-alert(lala);
 // configuration
 var navigationItem = document.getElementById('nav-subnav').getElementsByClassName('nav-a')[0].textContent;
 var monthsDe = {"Januar": 1, "Februar": 2, "März": 3, "April": 4, "Mai": 5, "Juni": 6, "Juli": 7, "August": 8, "September": 9, "Oktober": 10, "November": 11, "Dezember": 12};
 var monthsCom = {"January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6, "July": 7, "August": 8, "September": 9, "October": 10, "November": 11, "December": 12}
 var regexReleaseDate = /Audio CD  \((.*)\)/;
 var regexReleaseLabel = /Label: (.*)/;
-
+alert("asd");
 switch (navigationItem)
 {
     // amazon.com
@@ -36,7 +32,7 @@ switch (navigationItem)
         var category = "mp3";
         break;
 
-    // amazon.de
+        // amazon.de
     case "Musik-CDs & Vinyl":
         var months = monthsDe;
         var domain = 'de';
@@ -50,7 +46,7 @@ switch (navigationItem)
         var category = "mp3";
         break;
 
-    // amazon.ca (in english)
+        // amazon.ca (in english)
     case "Music":
         var months = monthsCom;
         var domain = 'ca';
@@ -59,7 +55,7 @@ switch (navigationItem)
         var regexNumDiscs = /Number of Discs: (.*)/;
         break;
 
-    // amazon.ca (in french)
+        // amazon.ca (in french)
     case "Musique":
         var months = monthsCom;
         var domain = 'ca';
@@ -87,11 +83,11 @@ var formSelectPrimaryType = document.createElement("select");
 formSelectPrimaryType.name = "type";
 
 var formOption = document.createElement("option");
-formOption.text = "";
+formOption.text = "Primary Type";
 formSelectPrimaryType.add(formOption);
 
 formOption = document.createElement("option");
-formOption.text = "spokenword";
+formOption.text = "Album";
 formSelectPrimaryType.add(formOption);
 
 formOption = document.createElement("option");
@@ -111,14 +107,6 @@ formOption.text = "Other";
 formSelectPrimaryType.add(formOption);
 
 form.appendChild(formSelectPrimaryType);
-
-var formSelectSecondaryType = document.createElement("select");
-formSelectSecondaryType.name = "type";
-
-formOption = document.createElement("option");
-formOption.text = "Spokenword";
-formOption.value = "spokenword";
-formSelectSecondaryType.add(formOption);
 
 form.appendChild(formSelectSecondaryType);
 
