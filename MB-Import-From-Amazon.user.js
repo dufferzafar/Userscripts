@@ -156,11 +156,11 @@ switch (category) {
                 Track listings:
 
                 One Disk: http://www.amazon.de/01-Fl%C3%BCsterer-Remastered-Gabriel-Burns/dp/B00N29D69I
-                Multiple Disks:
+                Multiple Disks: http://www.amazon.de/Book-Souls-limited-Deluxe/dp/B00ZVFYVMM
             */
 
             var tracklist = document.getElementById("dmusic_tracklist_content").getElementsByTagName("tr");
-                        
+            
             for (var i = 1; i < tracklist.length; i++) {
                 if (tracklist[i].id == "dmusic_tracklist_player_disc_" + (medium + 2))
                 {
@@ -170,13 +170,15 @@ switch (category) {
 
                     continue;
                 }
-
+                
                 var trackDetails = tracklist[i].getElementsByTagName("td");
-                            
-                createInput(form, "hidden", "mediums." + medium + ".track." + track + ".number", trackDetails[0].getElementsByClassName("TrackNumber")[0].textContent);
-                createInput(form, "hidden", "mediums." + medium + ".track." + track + ".name", trackDetails[1].getElementsByClassName("TitleLink")[0].textContent);
-                createInput(form, "hidden", "mediums." + medium + ".track." + track + ".length", trackDetails[2].getElementsByTagName("span")[0].textContent.trim());
 
+                if (trackDetails[0].getElementsByClassName("TrackNumber")[0]) {
+                    createInput(form, "hidden", "mediums." + medium + ".track." + track + ".number", trackDetails[0].getElementsByClassName("TrackNumber")[0].textContent);
+                    createInput(form, "hidden", "mediums." + medium + ".track." + track + ".name", trackDetails[1].getElementsByClassName("TitleLink")[0].textContent);
+                    createInput(form, "hidden", "mediums." + medium + ".track." + track + ".length", trackDetails[2].getElementsByTagName("span")[0].textContent.trim());
+                }
+                
                 track++;
             }
         } else if (document.getElementById("dmusic_tracklist_player")) {
@@ -201,8 +203,10 @@ switch (category) {
 
                 var trackDetails = tracklist[i].textContent.split(". ");
 
-                createInput(form, "hidden", "mediums." + medium + ".track." + track + ".number", trackDetails[0].trim());
-                createInput(form, "hidden", "mediums." + medium + ".track." + track + ".name", trackDetails[1].trim());
+                if (trackDetails[0].trim()) {
+                    createInput(form, "hidden", "mediums." + medium + ".track." + track + ".number", trackDetails[0].trim());
+                    createInput(form, "hidden", "mediums." + medium + ".track." + track + ".name", trackDetails[1].trim());
+                }
             
                 track++;
             }
@@ -232,8 +236,10 @@ switch (category) {
 
                 var trackDetails = tracklist[i].getElementsByTagName("td")[0].textContent.split(". ");
                                 
-                createInput(form, "hidden", "mediums." + medium + ".track." + track + ".number", trackDetails[0].trim());
-                createInput(form, "hidden", "mediums." + medium + ".track." + track + ".name", trackDetails[1].trim());
+                if (trackDetails[0].trim()) {
+                    createInput(form, "hidden", "mediums." + medium + ".track." + track + ".number", trackDetails[0].trim());
+                    createInput(form, "hidden", "mediums." + medium + ".track." + track + ".name", trackDetails[1].trim());
+                }
 
                 track++;
             }
