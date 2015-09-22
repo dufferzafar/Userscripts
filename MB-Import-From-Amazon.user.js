@@ -148,18 +148,26 @@ switch (category) {
             }
         }
 
-        createInput(form, "hidden", "mediums.0.format", "CD");
+        createInput(form, "hidden", "mediums." + medium + ".format", "CD");
 
         // Amazon has more than one track listing...
         if (document.getElementById("dmusic_tracklist_content")) {
-            var tracklist = document.getElementById("dmusic_tracklist_content").getElementsByTagName("tr");
+            /*
+                Track listings:
 
+                One Disk: http://www.amazon.de/01-Fl%C3%BCsterer-Remastered-Gabriel-Burns/dp/B00N29D69I
+                Multiple Disks:
+            */
+
+            var tracklist = document.getElementById("dmusic_tracklist_content").getElementsByTagName("tr");
+                        
             for (var i = 1; i < tracklist.length; i++) {
                 if (tracklist[i].id == "dmusic_tracklist_player_disc_" + (medium + 2))
                 {
                     medium++;
                     track = 0;
                     createInput(form, "hidden", "mediums." + medium + ".format", "CD");
+
                     continue;
                 }
 
@@ -171,8 +179,14 @@ switch (category) {
 
                 track++;
             }
-        }
-        else if (document.getElementById("dmusic_tracklist_player")) {
+        } else if (document.getElementById("dmusic_tracklist_player")) {
+            /*
+                Track listings:
+
+                One Disk: 
+                Multiple Disks: http://www.amazon.de/Deceiver-Gods-Amon-Amarth/dp/B00CEJ2H6K
+            */
+
             var tracklist = document.getElementById("dmusic_tracklist_player").getElementsByClassName("a-row");
 
             for (var i = 1; i < tracklist.length; i++) {
@@ -181,6 +195,7 @@ switch (category) {
                     medium++;
                     track = 0;
                     createInput(form, "hidden", "mediums." + medium + ".format", "CD");
+
                     continue;
                 }
 
@@ -191,7 +206,39 @@ switch (category) {
             
                 track++;
             }
+        } else if (document.getElementById("musicTracksFeature")) {
+            /*
+                Track listings:
+
+                One Disk: http://www.amazon.ca/gp/product/B00062PWOQ
+                Multiple Disks: http://www.amazon.ca/The-Book-Souls-Deluxe-Hardcover/dp/B00ZVFYVMM
+            */
+
+            var tracklist = document.getElementById("musicTracksFeature").getElementsByTagName("tr");
+
+            for (var i = 0; i < tracklist.length; i++) {
+                if (tracklist[i].classList.contains("sampleTracksHeader"))
+                {
+                    if (i == 0) {
+                        continue;
+                    }
+
+                    medium++;
+                    track = 0;
+                    createInput(form, "hidden", "mediums." + medium + ".format", "CD");
+
+                    continue;
+                }
+
+                var trackDetails = tracklist[i].getElementsByTagName("td")[0].textContent.split(". ");
+                                
+                createInput(form, "hidden", "mediums." + medium + ".track." + track + ".number", trackDetails[0].trim());
+                createInput(form, "hidden", "mediums." + medium + ".track." + track + ".name", trackDetails[1].trim());
+
+                track++;
+            }
         }
+
         break;
 }
 
