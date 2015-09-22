@@ -3,7 +3,7 @@
 // @name            MusicBrainz: Import from Amazon
 // @namespace       mb_import_from_amazon
 // @include         *://www.amazon.*
-// @version         0.91
+// @version         0.92
 // @grant           none
 // @author          dufferZafar & Gore
 // @description     Import releases from Amazon
@@ -185,7 +185,7 @@ switch (category) {
             /*
                 Track listings:
 
-                One Disk: 
+                One Disk: http://www.amazon.de/Seventh-Son-Iron-Maiden/dp/B0000251W3
                 Multiple Disks: http://www.amazon.de/Deceiver-Gods-Amon-Amarth/dp/B00CEJ2H6K
             */
 
