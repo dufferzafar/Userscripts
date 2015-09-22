@@ -46,7 +46,7 @@ switch (navigationItem) {
         var category = "mp3";
         break;
 
-        // amazon.ca (in english)
+        // amazon.co.uk / amazon.ca (in english)
     case "Music":
         var months = monthsCom;
         var domain = 'ca';
