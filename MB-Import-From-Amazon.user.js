@@ -14,6 +14,7 @@
 var navigationItem = document.getElementById('nav-subnav').getElementsByClassName('nav-a')[0].textContent;
 var monthsDe = {"Januar": 1, "Februar": 2, "März": 3, "April": 4, "Mai": 5, "Juni": 6, "Juli": 7, "August": 8, "September": 9, "Oktober": 10, "November": 11, "Dezember": 12};
 var monthsCom = {"January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6, "July": 7, "August": 8, "September": 9, "October": 10, "November": 11, "December": 12}
+var monthsCoUk = {"Jan.": 1, "Feb.": 2, "March": 3, "April": 4, "May": 5, "June": 6, "July": 7, "Aug.": 8, "Sept.": 9, "Oct.": 10, "Nov.": 11, "Dec": 12}
 var regexReleaseDate = /Audio CD  \((.*)\)/;
 var regexReleaseLabel = /Label: (.*)/;
 
@@ -48,8 +49,8 @@ switch (navigationItem) {
 
         // amazon.co.uk / amazon.ca (in english)
     case "Music":
-        var months = monthsCom;
-        var domain = 'ca';
+        var months = monthsCoUk;
+        var domain = 'couk';
         var category = "cd";
         var disc = "Disc";
         var regexNumDiscs = /Number of Discs: (.*)/;
@@ -136,6 +137,14 @@ switch (category) {
 
                         createInput(form, "hidden", "events.0.date.day", splittedDate[1].replace(/,/, ""));
                         createInput(form, "hidden", "events.0.date.month", months[splittedDate[0]]);
+                        createInput(form, "hidden", "events.0.date.year", splittedDate[2]);
+                        break;
+
+                    case "couk":
+                        var splittedDate = match[1].split(" ");
+
+                        createInput(form, "hidden", "events.0.date.day", splittedDate[0]);
+                        createInput(form, "hidden", "events.0.date.month", months[splittedDate[1]]);
                         createInput(form, "hidden", "events.0.date.year", splittedDate[2]);
                         break;
                 }
