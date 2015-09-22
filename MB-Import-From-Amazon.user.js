@@ -3,7 +3,7 @@
 // @name            MusicBrainz: Import from Amazon
 // @namespace       mb_import_from_amazon
 // @include         *://www.amazon.*
-// @version         0.94
+// @version         0.95
 // @grant           none
 // @author          dufferZafar & Gore
 // @description     Import releases from Amazon
