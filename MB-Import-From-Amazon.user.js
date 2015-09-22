@@ -17,7 +17,6 @@ var monthsCom = {"January": 1, "February": 2, "March": 3, "April": 4, "May": 5, 
 var monthsCoUk = {"Jan.": 1, "Feb.": 2, "March": 3, "April": 4, "May": 5, "June": 6, "July": 7, "Aug.": 8, "Sept.": 9, "Oct.": 10, "Nov.": 11, "Dec": 12}
 var monthsCaFrench = {"janvier": 1, "février": 2, "mars": 3, "avril": 4, "mai": 5, "juin": 6, "juillet": 7, "août": 8, "septembre": 9, "octobre": 10, "novembre": 11, "décembre": 12}
 var regexReleaseDate = /Audio CD  \((.*)\)/;
-var regexReleaseLabel = /Label: (.*)/;
 
 switch (navigationItem) {
     // amazon.com
@@ -27,6 +26,7 @@ switch (navigationItem) {
         var category = "cd";
         var disc = "Disc";
         var regexNumDiscs = /Number of Discs: (.*)/;
+        var regexReleaseLabel = /Label: (.*)/;
         break;
 
     case "Digital Music":
@@ -41,6 +41,7 @@ switch (navigationItem) {
         var category = "cd";
         var disc = "Disk";
         var regexNumDiscs = /Anzahl Disks\/Tonträger: (.*)/;
+        var regexReleaseLabel = /Label: (.*)/;
         break;
 
     case "Musik-Downloads":
@@ -57,6 +58,7 @@ switch (navigationItem) {
                 var category = "cd";
                 var disc = "Disc";
                 var regexNumDiscs = /Number of Discs: (.*)/;
+                var regexReleaseLabel = /Label: (.*)/;
                 break;
 
             // amazon.ca (in english)
@@ -66,6 +68,7 @@ switch (navigationItem) {
                 var category = "cd";
                 var disc = "Disc";
                 var regexNumDiscs = /Number of Discs: (.*)/;
+                var regexReleaseLabel = /Label: (.*)/;
                 break;
         }
         break;
@@ -77,7 +80,8 @@ switch (navigationItem) {
         var domain = 'caFrench';
         var category = "cd";
         var disc = "Disc";
-        var regexNumDiscs = /Number of Discs: (.*)/;
+        var regexNumDiscs = /Quantité de disques : (.*)/;
+        var regexReleaseLabel = /Étiquette : (.*)/;
         break;
 
     default:
