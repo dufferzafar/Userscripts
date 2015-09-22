@@ -33,7 +33,7 @@ switch (navigationItem) {
         var category = "mp3";
         break;
 
-        // amazon.de
+    // amazon.de
     case "Musik-CDs & Vinyl":
         var months = monthsDe;
         var domain = 'de';
@@ -47,17 +47,31 @@ switch (navigationItem) {
         var category = "mp3";
         break;
 
-        // amazon.co.uk / amazon.ca (in english)
     case "Music":
-        var months = monthsCoUk;
-        var domain = 'couk';
-        var category = "cd";
-        var disc = "Disc";
-        var regexNumDiscs = /Number of Discs: (.*)/;
+        switch (document.domain) {
+            // amazon.co.uk
+            case "www.amazon.co.uk":
+                var months = monthsCoUk;
+                var domain = 'couk';
+                var category = "cd";
+                var disc = "Disc";
+                var regexNumDiscs = /Number of Discs: (.*)/;
+                break;
+
+            // amazon.ca (in english)
+            case "www.amazon.ca":
+                var months = monthsCoUk;
+                var domain = 'ca';
+                var category = "cd";
+                var disc = "Disc";
+                var regexNumDiscs = /Number of Discs: (.*)/;
+                break;
+        }
         break;
 
-        // amazon.ca (in french)
+    // amazon.ca (in french)
     case "Musique":
+        // todo: months in french
         var months = monthsCom;
         var domain = 'ca';
         var category = "cd";
@@ -121,7 +135,7 @@ switch (category) {
 
         for (var i = 0; i < detailsList.length; i++) {   
             match = regexReleaseDate.exec(detailsList[i].textContent);
-            
+
             if (match) {
                 switch (domain) {
                     case "de":
@@ -147,6 +161,14 @@ switch (category) {
                         createInput(form, "hidden", "events.0.date.month", months[splittedDate[1]]);
                         createInput(form, "hidden", "events.0.date.year", splittedDate[2]);
                         break;
+
+                    case "ca":
+                        var splittedDate = match[1].split(" ");
+
+                        createInput(form, "hidden", "events.0.date.day", splittedDate[1]);
+                        createInput(form, "hidden", "events.0.date.month", months[splittedDate[0]]);
+                        createInput(form, "hidden", "events.0.date.year", splittedDate[2]);
+                        break;
                 }
             }
 
@@ -169,7 +191,7 @@ switch (category) {
             */
 
             var tracklist = document.getElementById("dmusic_tracklist_content").getElementsByTagName("tr");
-            
+
             for (var i = 1; i < tracklist.length; i++) {
                 if (tracklist[i].id == "dmusic_tracklist_player_disc_" + (medium + 2))
                 {
@@ -179,7 +201,7 @@ switch (category) {
 
                     continue;
                 }
-                
+
                 var trackDetails = tracklist[i].getElementsByTagName("td");
 
                 if (trackDetails[0].getElementsByClassName("TrackNumber")[0]) {
@@ -187,7 +209,7 @@ switch (category) {
                     createInput(form, "hidden", "mediums." + medium + ".track." + track + ".name", trackDetails[1].getElementsByClassName("TitleLink")[0].textContent);
                     createInput(form, "hidden", "mediums." + medium + ".track." + track + ".length", trackDetails[2].getElementsByTagName("span")[0].textContent.trim());
                 }
-                
+
                 track++;
             }
         } else if (document.getElementById("dmusic_tracklist_player")) {
@@ -216,7 +238,7 @@ switch (category) {
                     createInput(form, "hidden", "mediums." + medium + ".track." + track + ".number", trackDetails[0].trim());
                     createInput(form, "hidden", "mediums." + medium + ".track." + track + ".name", trackDetails[1].trim());
                 }
-            
+
                 track++;
             }
         } else if (document.getElementById("musicTracksFeature")) {
@@ -244,7 +266,7 @@ switch (category) {
                 }
 
                 var trackDetails = tracklist[i].getElementsByTagName("td")[0].textContent.split(". ");
-                                
+
                 if (trackDetails[0].trim()) {
                     createInput(form, "hidden", "mediums." + medium + ".track." + track + ".number", trackDetails[0].trim());
                     createInput(form, "hidden", "mediums." + medium + ".track." + track + ".name", trackDetails[1].trim());
@@ -281,7 +303,7 @@ function createInput(form, type, name, value, id, css)
     if (css) {
         input.classList.add(css);
     }
-    
+
     input.value = value;
 
     form.appendChild(input);
