@@ -2,7 +2,7 @@
 // @id             Youtube-To-MP3
 // @name           Youtube-To-MP3
 // @version        0.8
-// @namespace      Youtube-To-MP3
+// @namespace      http://github.com/dufferzafar/Userscripts
 // @author         dufferZafar
 // @description    Download MP3 from a youtube video
 // @include        *//www.youtube.com/*

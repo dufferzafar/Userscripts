@@ -1,11 +1,10 @@
-﻿// ==UserScript==
-// @id              MusicBrainz-Import-from-Amazon
+// ==UserScript==
 // @name            MusicBrainz: Import from Amazon
-// @namespace       mb_import_from_amazon
+// @namespace       https://github.com/Goram/Userscripts
 // @include         *://www.amazon.*
-// @version         0.96
+// @version         0.97
 // @grant           none
-// @author          dufferZafar & Gore
+// @author          Gore (based on https://github.com/dufferzafar/Userscripts)
 // @description     Import releases from Amazon
 // @run-at          document-end
 // ==/UserScript==

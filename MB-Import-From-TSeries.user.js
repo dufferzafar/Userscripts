@@ -2,7 +2,7 @@
 // @id             MusicBrainz-Import-from-TSeries
 // @name           MusicBrainz: Import from TSeries
 // @version        0.7
-// @namespace      mb_import_from_tseries
+// @namespace      http://github.com/dufferzafar/Userscripts
 // @author         dufferZafar
 // @description    Import albums from the T-Series official website to add them as a release to Musicbrainz
 // @include        *://www.tseries.com/music/*

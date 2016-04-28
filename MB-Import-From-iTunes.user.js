@@ -3,7 +3,7 @@
 // @description Import releases from iTunes
 // @version     2014-06-21
 // @author      -
-// @namespace   http://userscripts.org/users/41307
+// @namespace   http://github.com/dufferzafar/Userscripts
 //
 // @include     *://itunes.apple.com/*
 //
