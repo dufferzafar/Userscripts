@@ -6,8 +6,27 @@
 // @grant           none
 // @author          Gore (based on https://github.com/dufferzafar/Userscripts)
 // @description     Import releases from Amazon
+// @require         controller.js
+// @require         https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js
 // @run-at          document-end
 // ==/UserScript==
+
+var div = document.createElement('div');
+div.setAttribute('data-ng-app', 'mbImportFromAmazon')
+div.setAttribute('data-ng-view', 'data-ng-view');
+
+var p = document.createElement('p');
+p.setAttribute('data-ng-controller', 'import')
+p.innerHTML = '{{ form }}'
+
+div.appendChild(p);
+document.getElementById('navbar').appendChild(div)
+
+alert('22');
+
+return;
+alert('fdfsd');
+
 
 // configuration
 var navigationItem = document.getElementById('nav-subnav').getElementsByClassName('nav-a')[0].textContent;
@@ -90,15 +109,15 @@ switch (navigationItem) {
 var css = document.createElement("style");
 
 css.type = "text/css";
-css.innerHTML = "#mbForm {border: 1px solid #DDDDDD; border-radius: 4px; padding: 10px 14px 10px 14px;}";
-css.innerHTML += "#mbSubmit {border: 1px solid #6DAEE1; border-radius: 3px; cursor: pointer; padding: 4px 0px 4px 0px; margin: 5px 0px 0px 0px; width: 100%; background: #C9E1F4;} .mbSubmit:hover {background: #B2D3ED}";
+css.innerHTML = "#mbForm {}";
+css.innerHTML += "#mbSubmit {border: 1px solid #6DAEE1; border-radius: 3px; cursor: pointer; background: #C9E1F4;} .mbSubmit:hover {background: #B2D3ED}";
 
 document.body.appendChild(css);
 
 var form = document.createElement("form");
 
 form.id = "mbForm";
-form.method="post";
+form.method ="post";
 form.target = "_blank";
 form.action = "https://musicbrainz.org/release/add";
 form.acceptCharset = "UTF-8";
@@ -117,7 +136,16 @@ form.appendChild(formSelectPrimaryType);
 
 switch (category) {
     case "cd":
-        document.getElementById('tellAFriendBox_feature_div').appendChild(form);
+
+        
+
+        //eElement.insertBefore(newFirstElement, eElement.firstChild);
+		var musicBrainz = document.createElement("span");
+		musicBrainz.style="color: red";
+		musicBrainz.innerHTML = TextNode("MusicBrainz: ");
+		
+		document.getElementById('navbar').appendChild(musicBrainz);
+        document.getElementById('navbar').appendChild(form);
 
         // Title of the Album
         // Todo: Use regex to extract ONLY album title
@@ -276,9 +304,9 @@ switch (category) {
 
                     continue;
                 }
-
+                
                 var trackDetails = tracklist[i].getElementsByTagName("td")[0].textContent.split(". ");
-
+                
                 if (trackDetails[0].trim()) {
                     createInput(form, "hidden", "mediums." + medium + ".track." + track + ".number", trackDetails[0].trim());
                     createInput(form, "hidden", "mediums." + medium + ".track." + track + ".name", trackDetails[1].trim());
