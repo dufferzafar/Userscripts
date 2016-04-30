@@ -6,8 +6,9 @@
 // @grant           none
 // @author          Gore (based on https://github.com/dufferzafar/Userscripts)
 // @description     Import releases from Amazon
-// @require         https://raw.githubusercontent.com/Goram/Userscripts/develop/controller.js
 // @require         https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js
+// @require         https://raw.githubusercontent.com/Goram/Userscripts/develop/app.js
+// @require         https://raw.githubusercontent.com/Goram/Userscripts/develop/controller.js
 // @run-at          document-end
 // ==/UserScript==
 
@@ -22,10 +23,13 @@ p.innerHTML = '{{ form }}'
 div.appendChild(p);
 document.getElementById('navbar').appendChild(div)
 
-alert('23');
+
+var goreMbifa = angular.module('goreMbifa');
+
+alert('main');
 
 return;
-alert('fdfsd');
+
 
 
 // configuration
