@@ -6,7 +6,7 @@
 // @grant           none
 // @author          Gore (based on https://github.com/dufferzafar/Userscripts)
 // @description     Import releases from Amazon
-// @require         controller.js
+// @require         https://raw.githubusercontent.com/Goram/Userscripts/develop/controller.js
 // @require         https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js
 // @run-at          document-end
 // ==/UserScript==
@@ -22,7 +22,7 @@ p.innerHTML = '{{ form }}'
 div.appendChild(p);
 document.getElementById('navbar').appendChild(div)
 
-alert('22');
+alert('23');
 
 return;
 alert('fdfsd');
