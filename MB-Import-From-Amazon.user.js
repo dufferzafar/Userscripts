@@ -7,30 +7,15 @@
 // @author          Gore (based on https://github.com/dufferzafar/Userscripts)
 // @description     Import releases from Amazon
 // @require         https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js
-// @require         https://raw.githubusercontent.com/Goram/Userscripts/develop/app.js
-// @require         https://raw.githubusercontent.com/Goram/Userscripts/develop/controller.js
+// @require         https://raw.githubusercontent.com/Goram/Userscripts/develop/bootstrap.js
 // @run-at          document-end
 // ==/UserScript==
 
-var div = document.createElement('div');
-div.setAttribute('data-ng-app', 'mbImportFromAmazon')
-div.setAttribute('data-ng-view', 'data-ng-view');
-
-var p = document.createElement('p');
-p.setAttribute('data-ng-controller', 'import')
-p.innerHTML = '{{ form }}'
-
-div.appendChild(p);
-document.getElementById('navbar').appendChild(div)
-
-
-var goreMbifa = angular.module('goreMbifa');
-
-alert('main');
+goreMbifa.controller('mbifaController', function ($scope) {
+    $scope.form = "test string";
+});
 
 return;
-
-
 
 // configuration
 var navigationItem = document.getElementById('nav-subnav').getElementsByClassName('nav-a')[0].textContent;
