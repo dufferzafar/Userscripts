@@ -4,7 +4,7 @@
 
 Import album data from Amazon to add a new release on MusicBrainz.
 
-[![Install](https://raw.github.com/jerone/UserScripts/master/_resources/Install-button.jpg)](https://github.com/goram/Userscripts/raw/master/MB-Import-From-Amazon.user.js)
+[![Install](https://raw.github.com/jerone/UserScripts/master/_resources/Install-button.jpg)](https://github.com/goram/Userscripts/raw/master/built/MusicBrainz_Import_from_Amazon.user.js)
 
 ### Description
 
