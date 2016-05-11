@@ -323,12 +323,14 @@ goreMbifa.service('dataCollectorService', function (config, siteLookupService, l
                     continue;
                 }
 
-                var trackDetails = tracklistContent[i].getElementsByTagName('td')[0].textContent.split('. ');
+                if (tracklistContent[i].hasAttribute('class')) {
+                    var trackDetails = tracklistContent[i].getElementsByTagName('td')[0].textContent.split('. ');
 
-                tracks['tracks'].push({
-                    'number': trackDetails[0].trim(),
-                    'title': trackDetails[1].trim()
-                });
+                    tracks['tracks'].push({
+                        'number': trackDetails[0].trim(),
+                        'title': trackDetails[1].trim()
+                    });
+                }
             }
         }
 
