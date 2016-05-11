@@ -17,9 +17,15 @@ var jquery = {};
 
 jquery = jQuery.noConflict(true);
 
-jquery('#rightCol').prepend(
-    '<data-gore-mbifa-bootstrap data-ng-app="goreMbifa" data-ng-controller="mbifaController">'
-);
+if (jquery('#rightCol').length) {
+    jquery('#rightCol').prepend(
+        '<data-gore-mbifa-bootstrap data-ng-app="goreMbifa" data-ng-controller="mbifaController">'
+    );
+} else if (jquery('.buyingDetailsGrid').length) {
+    jquery('.buyingDetailsGrid').prepend(
+        '<tr><td><data-gore-mbifa-bootstrap data-ng-app="goreMbifa" data-ng-controller="mbifaController"></td></tr>'
+    );
+}
 
 var goreMbifa = angular.module('goreMbifa', []);
 
@@ -116,7 +122,10 @@ goreMbifa.directive('goreMbifaBootstrap', function () {
                 }
 
                 #gorembifa-app select {
-                    width: 100%
+                    width: 100%;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    padding: 3px;
                 }
 
                 #gorembifa-app form {
@@ -132,6 +141,7 @@ goreMbifa.directive('goreMbifaBootstrap', function () {
                     border-radius: 3px;
                     background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
                     margin: 10px 0px 0px 0px;
+                    font-family: Arial, sans-serif;
                 }
             </style>
             <div id="gorembifa-app">

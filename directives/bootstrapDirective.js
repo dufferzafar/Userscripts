@@ -10,7 +10,10 @@
                 }
 
                 #gorembifa-app select {
-                    width: 100%
+                    width: 100%;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    padding: 3px;
                 }
 
                 #gorembifa-app form {
@@ -26,6 +29,7 @@
                     border-radius: 3px;
                     background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
                     margin: 10px 0px 0px 0px;
+                    font-family: Arial, sans-serif;
                 }
             </style>
             <div id="gorembifa-app">
