@@ -120,8 +120,12 @@
 
             var tracklistContent = jquery('#musicTracksFeature tr');
 
-            for (var i = 1; i < tracklistContent.length; i++) {
+            for (var i = 0; i < tracklistContent.length; i++) {
                 if (tracklistContent[i].classList.contains('sampleTracksHeader')) {
+                    if (i == 0) {
+                        continue;
+                    }
+
                     tracklist['discs'][disc] = tracks;
 
                     disc++;
