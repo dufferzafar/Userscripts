@@ -4,7 +4,7 @@
 
         return {
             'title': jquery('#productTitle').text().trim(),
-            'artist': jquery('.author a').html(),
+            'artist': jquery('.author a').text().trim(),
             'releaseDate': this.collectReleaseDate(siteSpecificConfig, config.regexReleaseDate),
             'label': this.collectLabel(siteSpecificConfig),
             'tracklist': this.collectTracklist(siteSpecificConfig)
