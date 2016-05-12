@@ -2,9 +2,25 @@
     this.collectData = function () {
         var siteSpecificConfig = config.sites[siteLookupService].languages[languageLookupService]
 
+        var title = '';
+
+        if (jquery('#productTitle').length) {
+            title = jquery('#productTitle').text().trim();
+        } else if (jquery('.buying').length) {
+            title = jquery('#btAsinTitle span').clone().find('span').remove().end().html().trim();
+        }
+
+        var artist = '';
+
+        if (jquery('.author a').length) {
+            artist = jquery('.author a').text().trim();
+        } else if (jquery('.buying').length) {
+            artist = jquery('.buying span a').html().trim()
+        }
+
         return {
-            'title': jquery('#productTitle').text().trim(),
-            'artist': jquery('.author a').text().trim(),
+            'title': title,
+            'artist': artist,
             'releaseDate': this.collectReleaseDate(siteSpecificConfig, config.regexReleaseDate),
             'label': this.collectLabel(siteSpecificConfig),
             'tracklist': this.collectTracklist(siteSpecificConfig)
