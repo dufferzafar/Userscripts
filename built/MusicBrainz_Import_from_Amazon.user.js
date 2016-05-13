@@ -145,7 +145,7 @@ goreMbifa.directive('goreMbifaBootstrap', function () {
                 }
             </style>
             <div id="gorembifa-app">
-                <form method="{{ method }}" target="{{ target }}" action="{{ action }}" acceptCharset="{{ acceptCharset }}">
+                <form method="{{ method }}" target="{{ target }}" action="{{ action }}" accept-charset="{{ acceptCharset }}">
                     <select name="{{ primaryType.name }}" data-ng-model="primaryType.selectedType" data-ng-options="type.value for type in primaryType.types track by type.key"/>
                     <input type="hidden" name="name" value="{{ title }}"/>
                     <input type="hidden" name="artist_credit.names.0.name" value="{{ artist }}"/>
