@@ -38,7 +38,7 @@
                 }
             </style>
             <div id="gorembifa-app">
-                <form method="{{ form.method }}" target="{{ form.target }}" action="{{ form.action }}" accept-charset="{{ form.acceptCharset }}">
+                <form method="{{ form.method }}" action="{{ form.action }}" accept-charset="{{ form.acceptCharset }}">
                     <select name="{{ form.primaryType.name }}" data-ng-model="form.primaryType.selectedType" data-ng-options="type.value for type in form.primaryType.types track by type.key"/>
                     <input type="hidden" name="name" value="{{ form.title }}"/>
                     <input type="hidden" name="artist_credit.names.0.name" value="{{ form.artist }}"/>
@@ -61,7 +61,7 @@
                     <input type="submit" value="Export to MusicBrainz"/>
                 </form>
                 <div id="search">
-                    <a href="{{ link.href }}?query={{ link.query }}&type={{ link.type }}&limit={{ link.limit }}&method={{ link.method }}" target="{{ link.target }}">Search on MusicBrainz</a>
+                    <a href="{{ link.href }}?query={{ link.query }}&type={{ link.type }}&limit={{ link.limit }}&method={{ link.method }}">Search on MusicBrainz</a>
                 </div>
             </div>`
     };

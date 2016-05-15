@@ -5,7 +5,6 @@ goreMbifa.controller('mbifaController', function ($scope, config, dataCollectorS
     $scope.form = {
         'method': config.form.method,
         'action': config.form.action,
-        'target': config.form.target,
         'acceptCharset': config.form.acceptCharset,
         'primaryType': {
             'name': config.form.primaryType.name,
@@ -28,7 +27,6 @@ goreMbifa.controller('mbifaController', function ($scope, config, dataCollectorS
         'query': encodeURIComponent(data['title']),
         'type': config.link.type,
         'limit': config.link.limit,
-        'method': config.link.method,
-        'target': config.link.target
+        'method': config.link.method
     };
 });

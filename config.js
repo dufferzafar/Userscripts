@@ -54,7 +54,6 @@
     },
     'form': {
         'method': 'post',
-        'target': '_blank',
         'action': 'https://musicbrainz.org/release/add',
         'acceptCharset': 'UTF-8',
         'primaryType': {
@@ -72,7 +71,6 @@
     },
     'link': {
         'href': 'https://musicbrainz.org/search',
-        'target': '_blank',
         'type': 'release',
         'limit': '25',
         'method': 'direct'

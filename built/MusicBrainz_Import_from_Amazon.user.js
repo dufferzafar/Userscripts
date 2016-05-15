@@ -85,7 +85,6 @@ goreMbifa.constant('config', {
     },
     'form': {
         'method': 'post',
-        'target': '_blank',
         'action': 'https://musicbrainz.org/release/add',
         'acceptCharset': 'UTF-8',
         'primaryType': {
@@ -103,7 +102,6 @@ goreMbifa.constant('config', {
     },
     'link': {
         'href': 'https://musicbrainz.org/search',
-        'target': '_blank',
         'type': 'release',
         'limit': '25',
         'method': 'direct'
@@ -157,7 +155,7 @@ goreMbifa.directive('goreMbifaBootstrap', function () {
                 }
             </style>
             <div id="gorembifa-app">
-                <form method="{{ form.method }}" target="{{ form.target }}" action="{{ form.action }}" accept-charset="{{ form.acceptCharset }}">
+                <form method="{{ form.method }}" action="{{ form.action }}" accept-charset="{{ form.acceptCharset }}">
                     <select name="{{ form.primaryType.name }}" data-ng-model="form.primaryType.selectedType" data-ng-options="type.value for type in form.primaryType.types track by type.key"/>
                     <input type="hidden" name="name" value="{{ form.title }}"/>
                     <input type="hidden" name="artist_credit.names.0.name" value="{{ form.artist }}"/>
@@ -180,7 +178,7 @@ goreMbifa.directive('goreMbifaBootstrap', function () {
                     <input type="submit" value="Export to MusicBrainz"/>
                 </form>
                 <div id="search">
-                    <a href="{{ link.href }}?query={{ link.query }}&type={{ link.type }}&limit={{ link.limit }}&method={{ link.method }}" target="{{ link.target }}">Search on MusicBrainz</a>
+                    <a href="{{ link.href }}?query={{ link.query }}&type={{ link.type }}&limit={{ link.limit }}&method={{ link.method }}">Search on MusicBrainz</a>
                 </div>
             </div>`
     };
@@ -193,7 +191,6 @@ goreMbifa.controller('mbifaController', function ($scope, config, dataCollectorS
     $scope.form = {
         'method': config.form.method,
         'action': config.form.action,
-        'target': config.form.target,
         'acceptCharset': config.form.acceptCharset,
         'primaryType': {
             'name': config.form.primaryType.name,
@@ -216,8 +213,7 @@ goreMbifa.controller('mbifaController', function ($scope, config, dataCollectorS
         'query': encodeURIComponent(data['title']),
         'type': config.link.type,
         'limit': config.link.limit,
-        'method': config.link.method,
-        'target': config.link.target
+        'method': config.link.method
     };
 });
 
