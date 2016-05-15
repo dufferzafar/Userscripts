@@ -70,6 +70,13 @@
         },
         'editNode': 'Release added using the MB-Import-From-Amazon userscript from page: '
     },
+    'link': {
+        'href': 'https://musicbrainz.org/search',
+        'target': '_blank',
+        'type': 'release',
+        'limit': '25',
+        'method': 'direct'
+    },
     'regexReleaseDate': /Audio CD  \((.*)\)/
 });
 
