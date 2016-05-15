@@ -2,7 +2,7 @@
 // @name        MusicBrainz: Import from Amazon
 // @namespace   https://github.com/Goram/Userscripts
 // @include     *://www.amazon.*
-// @version     0.98.3
+// @version     0.98.4
 // @grant       none
 // @author      Gore (based on https://github.com/dufferzafar/Userscripts)
 // @description Import releases from Amazon
