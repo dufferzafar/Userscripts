@@ -38,6 +38,7 @@ goreMbifa.constant('config', {
                     'months': { 'Januar': '1', 'Februar': '2', 'März': '3', 'April': '4', 'Mai': '5', 'Juni': '6', 'Juli': '7', 'August': '8', 'September': '9', 'Oktober': '10', 'November': '11', 'Dezember': '12' },
                     'disc': 'Disk',
                     'releaseDateOrder': [0, 1, 2],
+                    'regexReleaseDate': /Audio CD  \((.*)\)/,
                     'regexNumDiscs': /Anzahl Disks\/Tonträger: (.*)/,
                     'regexReleaseLabel': /Label: (.*)/
                 }
@@ -49,6 +50,7 @@ goreMbifa.constant('config', {
                     'months': { 'January': '1', 'February': '2', 'March': '3', 'April': '4', 'May': '5', 'June': '6', 'July': '7', 'August': '8', 'September': '9', 'October': '10', 'November': '11', 'December': '12' },
                     'disc': 'Disc',
                     'releaseDateOrder': [1, 0, 2],
+                    'regexReleaseDate': /Audio CD  \((.*)\)/,
                     'regexNumDiscs': /Number of Discs: (.*)/,
                     'regexReleaseLabel': /Label: (.*)/
                 }
@@ -60,6 +62,7 @@ goreMbifa.constant('config', {
                     'months': { 'Jan.': '1', 'Feb.': '2', 'March': '3', 'April': '4', 'May': '5', 'June': '6', 'July': '7', 'Aug.': '8', 'Sept.': '9', 'Oct.': '10', 'Nov.': '11', 'Dec': '12' },
                     'disc': 'Disc',
                     'releaseDateOrder': [0, 1, 2],
+                    'regexReleaseDate': /Audio CD  \((.*)\)/,
                     'regexNumDiscs': /Number of Discs: (.*)/,
                     'regexReleaseLabel': /Label: (.*)/
                 }
@@ -71,6 +74,7 @@ goreMbifa.constant('config', {
                     'months': { 'Jan': '1', 'Feb': '2', 'March': '3', 'April': '4', 'May': '5', 'June': '6', 'July': '7', 'Aug': '8', 'Sept': '9', 'Oct': '10', 'Nov': '11', 'Dec': '12' },
                     'disc': 'Disc',
                     'releaseDateOrder': [1, 0, 2],
+                    'regexReleaseDate': /Audio CD  \((.*)\)/,
                     'regexNumDiscs': /Number of Discs: (.*)/,
                     'regexReleaseLabel': /Label: (.*)/
                 },
@@ -78,8 +82,21 @@ goreMbifa.constant('config', {
                     'months': { 'janvier': '1', 'février': '2', 'mars': '3', 'avril': '4', 'mai': '5', 'juin': '6', 'juillet': '7', 'août': '8', 'septembre': '9', 'octobre': '10', 'novembre': '11', 'décembre': '12' },
                     'disc': 'Disc',
                     'releaseDateOrder': [0, 1, 2],
+                    'regexReleaseDate': /Audio CD  \((.*)\)/,
                     'regexNumDiscs': /Quantité de disques : (.*)/,
                     'regexReleaseLabel': /Étiquette : (.*)/
+                }
+            }
+        },
+        'www.amazon.fr': {
+            'languages': {
+                'fr': {
+                    'months': { 'janvier': '1', 'février': '2', 'mars': '3', 'avril': '4', 'mai': '5', 'juin': '6', 'juillet': '7', 'août': '8', 'septembre': '9', 'octobre': '10', 'novembre': '11', 'décembre': '12' },
+                    'disc': 'Disc',
+                    'releaseDateOrder': [0, 1, 2],
+                    'regexReleaseDate': /CD  \((.*)\)/,
+                    'regexNumDiscs': /Nombre de disques: (.*)/,
+                    'regexReleaseLabel': /Label: (.*)/
                 }
             }
         }
@@ -106,8 +123,7 @@ goreMbifa.constant('config', {
         'type': 'release',
         'limit': '25',
         'method': 'direct'
-    },
-    'regexReleaseDate': /Audio CD  \((.*)\)/
+    }
 });
 
 goreMbifa.config(function ($sceDelegateProvider) {
@@ -115,6 +131,7 @@ goreMbifa.config(function ($sceDelegateProvider) {
       'https://musicbrainz.org/**'
     ]);
 });
+
 
 goreMbifa.directive('goreMbifaBootstrap', function () {
     return {
@@ -284,20 +301,20 @@ goreMbifa.service('dataCollectorService', function (config, siteLookupService, l
         return {
             'title': title,
             'artist': artist,
-            'releaseDate': this.collectReleaseDate(siteSpecificConfig, config.regexReleaseDate),
+            'releaseDate': this.collectReleaseDate(siteSpecificConfig),
             'label': this.collectLabel(siteSpecificConfig),
             'tracklist': this.collectTracklist(siteSpecificConfig)
         };
     };
 
-    this.collectReleaseDate = function (siteSpecificConfig, regexReleaseDate) {
+    this.collectReleaseDate = function (siteSpecificConfig) {
         var releaseDate = [];
 
         var releaseDateElement = jquery('#productDetailsTable li').filter(function () {
-            return regexReleaseDate.test(jquery(this).text());
+            return siteSpecificConfig.regexReleaseDate.test(jquery(this).text());
         });
 
-        var releaseDateMatch = regexReleaseDate.exec(releaseDateElement.text());
+        var releaseDateMatch = siteSpecificConfig.regexReleaseDate.exec(releaseDateElement.text());
 
         if (releaseDateMatch) {
             var releaseDateParts = releaseDateMatch[1].replace(/[.,]/g, '').split(' ');

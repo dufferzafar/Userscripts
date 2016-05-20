@@ -21,20 +21,20 @@
         return {
             'title': title,
             'artist': artist,
-            'releaseDate': this.collectReleaseDate(siteSpecificConfig, config.regexReleaseDate),
+            'releaseDate': this.collectReleaseDate(siteSpecificConfig),
             'label': this.collectLabel(siteSpecificConfig),
             'tracklist': this.collectTracklist(siteSpecificConfig)
         };
     };
 
-    this.collectReleaseDate = function (siteSpecificConfig, regexReleaseDate) {
+    this.collectReleaseDate = function (siteSpecificConfig) {
         var releaseDate = [];
 
         var releaseDateElement = jquery('#productDetailsTable li').filter(function () {
-            return regexReleaseDate.test(jquery(this).text());
+            return siteSpecificConfig.regexReleaseDate.test(jquery(this).text());
         });
 
-        var releaseDateMatch = regexReleaseDate.exec(releaseDateElement.text());
+        var releaseDateMatch = siteSpecificConfig.regexReleaseDate.exec(releaseDateElement.text());
 
         if (releaseDateMatch) {
             var releaseDateParts = releaseDateMatch[1].replace(/[.,]/g, '').split(' ');
