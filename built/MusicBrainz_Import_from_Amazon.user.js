@@ -178,7 +178,10 @@ goreMbifa.directive('goreMbifaBootstrap', function () {
                     <input type="submit" value="Export to MusicBrainz"/>
                 </form>
                 <div id="search">
-                    <a href="{{ link.href }}?query={{ link.query }}&type={{ link.type }}&limit={{ link.limit }}&method={{ link.method }}">Search on MusicBrainz</a>
+                    <a href="{{ link.href }}?query={{ link.query }}&type={{ link.type }}&limit={{ link.limit }}&method={{ link.method }}"
+                       title="Uses the direct search with exact matches only. If the result is empty, modify your search or try the indexed one. Search indexes are updated every 3 hours.">
+                       Search on MusicBrainz
+                    </a>
                 </div>
             </div>`
     };
