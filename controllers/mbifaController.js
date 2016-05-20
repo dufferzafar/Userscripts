@@ -1,4 +1,4 @@
-goreMbifa.controller('mbifaController', function ($scope, config, dataCollectorService) {
+goreMbifa.controller('mbifaController', function ($scope, $http, config, dataCollectorService) {
     var data = dataCollectorService.collectData();
     var documentLocationHref = document.location.href.split('?')[0]
 
@@ -29,4 +29,26 @@ goreMbifa.controller('mbifaController', function ($scope, config, dataCollectorS
         'limit': config.link.limit,
         'method': config.link.method
     };
+
+    $scope.searchIndexed = {
+        'releases':{},
+        'error': false
+    }
+
+    $http({
+        method: 'GET',
+        url: 'https://musicbrainz.org/ws/2/release?query=' + encodeURIComponent(data['title']) + '&fmt=json'
+    }).then(
+    function (response) {
+        $scope.searchIndexed.releases = response.data.releases;
+    },
+    function (response) {
+        $scope.searchIndexed.error = true;
+    });
+
+    jquery('#search-indexed').accordion({
+        heightStyle: 'content',
+        active: false,
+        collapsible: true
+    });
 });

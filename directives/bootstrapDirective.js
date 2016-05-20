@@ -32,9 +32,14 @@
                     font-family: Arial, sans-serif;
                 }
 
-                #gorembifa-app #search {
+                #gorembifa-app #search-direct, #search-indexed {
                     width: 100%;
                     text-align: center;
+                }
+
+                #gorembifa-app #search-indexed div {
+                    text-align: left;
+                    margin: 10px 0px 0px 0px;
                 }
             </style>
             <div id="gorembifa-app">
@@ -60,11 +65,24 @@
                     <input type="hidden" name="edit_note" value="{{ form.editNote }}"/>
                     <input type="submit" value="Export to MusicBrainz"/>
                 </form>
-                <div id="search">
+                <div id="search-direct">
                     <a href="{{ link.href }}?query={{ link.query }}&type={{ link.type }}&limit={{ link.limit }}&method={{ link.method }}"
-                       title="Uses the direct search with exact matches only. If the result is empty, modify your search or try the indexed one. Search indexes are updated every 3 hours.">
-                       Search on MusicBrainz
+                       title="Direct search uses exact matches only, but provides up to the minute correct results. If the result is empty, modify your search or try the indexed one.">
+                       Direct search on MusicBrainz
                     </a>
+                </div>
+                <div id="search-indexed">
+                    <a href="" title=" Search indexes are updated every 3 hours.">Indexed search results</a>
+                    <div>
+                        <ul data-ng-if="searchIndexed.error === false" data-ng-repeat="release in searchIndexed.releases">
+                            <li>
+                                {{ release['artist-credit'][0].artist.name }} - {{ release.title }}<br/>
+                                Score: {{ release.score }}<br/>
+                                Format: <media data-ng-repeat="media in release.media">{{ media.format }} </media>
+                            </li>
+                        </ul>
+                        <span data-ng-if="searchIndexed.error == true">The indexed search was not available.</span>
+                    </div>
                 </div>
             </div>`
     };
