@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        MusicBrainz: Import from Amazon
-// @namespace   https://github.com/Goram/Userscripts
+// @namespace   https://github.com/Goram/MusicBrainz-Import-from-Amazon
 // @include     *://www.amazon.*
 // @version     0.98.5
 // @grant       none
@@ -17,7 +17,7 @@
 var jquery = {};
 
 jquery = jQuery.noConflict(true);
-
+alert('223');
 if (jquery('#rightCol').length) {
     jquery('#rightCol').prepend(
         '<data-gore-mbifa-bootstrap data-ng-app="goreMbifa" data-ng-controller="mbifaController">'
