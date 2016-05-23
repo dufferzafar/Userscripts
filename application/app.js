@@ -1,7 +1,7 @@
 var jquery = {};
 
 jquery = jQuery.noConflict(true);
-alert('223');
+
 if (jquery('#rightCol').length) {
     jquery('#rightCol').prepend(
         '<data-gore-mbifa-bootstrap data-ng-app="goreMbifa" data-ng-controller="mbifaController">'
