@@ -39,7 +39,7 @@ module.exports = function (grunt) {
                     'application/services/languageLookupService.js',
                     'application/services/siteLookUpService.js'
                 ],
-                dest: 'application/built/MusicBrainz_Import_from_Amazon.user.js'
+                dest: 'built/MusicBrainz_Import_from_Amazon.user.js'
             }
         }
     });
