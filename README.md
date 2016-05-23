@@ -1,5 +1,3 @@
-## UserScripts
-
 ## MusicBrainz: Import from Amazon
 
 Import album data from Amazon to add a new release on MusicBrainz.
