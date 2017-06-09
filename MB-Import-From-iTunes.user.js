@@ -34,17 +34,14 @@ linkCSS.type = "text/css";
 linkCSS.innerHTML = ".artLink {margin-top: 10px;}"
 document.body.appendChild(linkCSS);
 
-var left = document.getElementById('left-stack');
-var art = left.getElementsByTagName('img')[0];
-src = art.getAttribute('src-swap-high-dpi');
-var viewBtn = left.getElementsByClassName('view-in-itunes')[0];
+var left = document.getElementsByClassName('medium-5')[0];
+var srcset = left.getElementsByTagName('source')[0].getAttribute('srcset');
+var src = srcset.split(',')[2].slice(0, -3);
 
 var artLink = document.createElement("p");
-artLink.innerHTML = "Artwork: <a href="+ src.replace(/340x340/g, "600x600")+">600px</a>"+
-                                    ", <a href="+ src.replace(/340x340/g, "1200x1200") +">1200px</a>";
+artLink.innerHTML = "<a href="+ src +">Link to HD Artwork</a>";
 artLink.classList.add("artLink");
-
-viewBtn.parentNode.insertBefore(artLink, viewBtn);
+left.appendChild(artLink);
 
 var div = document.createElement("div");
 div.classList.add("right");
