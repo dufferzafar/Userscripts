@@ -19,14 +19,7 @@ myform.acceptCharset = "UTF-8";
 // Stylize our button
 var btnCSS = document.createElement("style");
 btnCSS.type = "text/css";
-if (document.getElementsByClassName('view-more').length)
-{
-    btnCSS.innerHTML = ".mbBtn {border: 1px solid #ABABAB; cursor: pointer; border-radius: 4px; padding: 10px 15px; margin-top: 25px; margin-right: -150px; background: #F7F7F7;} .mbBtn:hover {background: #DEDEDE}"
-}
-else
-{
-    btnCSS.innerHTML = ".mbBtn {border: 1px solid #ABABAB; cursor: pointer; border-radius: 4px; padding: 10px 15px; background: #F7F7F7;} .mbBtn:hover {background: #DEDEDE}"
-}
+btnCSS.innerHTML = ".mbBtn {float: right; border: 1px solid #ABABAB; cursor: pointer; border-radius: 4px; padding: 10px 15px; background: #F7F7F7;} .mbBtn:hover {background: #DEDEDE}"
 document.body.appendChild(btnCSS);
 
 var mysubmit = document.createElement("input");
@@ -145,7 +138,9 @@ function callbackFunction(req) {
     add_field("urls.0.url", document.location.href);
 
     div.appendChild(myform);
-    document.getElementById('title').appendChild(div);
+
+    var parent = document.getElementsByClassName('product-header')[0];
+    parent.insertBefore(div, parent.firstChild);
 }
 
 //////////////////////////////////////////////////////////////////////////////
