@@ -19,7 +19,7 @@ myform.acceptCharset = "UTF-8";
 // Stylize our button
 var btnCSS = document.createElement("style");
 btnCSS.type = "text/css";
-btnCSS.innerHTML = ".mbBtn {float: right; border: 1px solid #ABABAB; cursor: pointer; border-radius: 4px; padding: 10px 15px; background: #F7F7F7;} .mbBtn:hover {background: #DEDEDE}"
+btnCSS.innerHTML = ".mbBtn {margin-top: 25px; border: 1px solid #ABABAB; cursor: pointer; border-radius: 4px; padding: 10px 15px; background: #F7F7F7;} .mbBtn:hover {background: #DEDEDE}"
 document.body.appendChild(btnCSS);
 
 var mysubmit = document.createElement("input");
@@ -44,7 +44,6 @@ artLink.classList.add("artLink");
 left.appendChild(artLink);
 
 var div = document.createElement("div");
-div.classList.add("right");
 
 var artist = '', album = '', label = '', year = 0, month = 0, day = 0, country = 'XW', type = 'album', discs = 0;
 
@@ -135,9 +134,7 @@ function callbackFunction(req) {
     add_field("urls.0.url", document.location.href);
 
     div.appendChild(myform);
-
-    var parent = document.getElementsByClassName('product-header')[0];
-    parent.insertBefore(div, parent.firstChild);
+    left.appendChild(div);
 }
 
 //////////////////////////////////////////////////////////////////////////////
