@@ -61,8 +61,7 @@ if (m = /^https?:\/\/itunes.apple.com\/(?:([a-z]{2})\/)?album\/(?:[^\/]+\/)?id([
 function callbackFunction(req) {
     if (xmlhttp.readyState != 4)
         return;
-    var r = eval('(' + xmlhttp.responseText + ')');
-//  var r = $.parseJSON(xmlhttp.responseText);
+    var r = JSON.parse(xmlhttp.responseText);
 
     for (var i = 0; i < r.results.length; i++) {
         if (r.results[i].wrapperType == "collection") {
