@@ -11,40 +11,6 @@
 //**************************************************************************//
 
 var myform = document.createElement("form");
-myform.method="post";
-myform.target = "blank";
-myform.action = document.location.protocol + "//musicbrainz.org/release/add";
-myform.acceptCharset = "UTF-8";
-
-// Stylize our button
-var btnCSS = document.createElement("style");
-btnCSS.type = "text/css";
-btnCSS.innerHTML = ".mbBtn {margin-top: 25px; border: 1px solid #ABABAB; cursor: pointer; border-radius: 4px; padding: 10px 15px; background: #F7F7F7;} .mbBtn:hover {background: #DEDEDE}"
-document.body.appendChild(btnCSS);
-
-var mysubmit = document.createElement("input");
-mysubmit.type = "submit";
-mysubmit.value = "Add to MusicBrainz";
-mysubmit.classList.add("mbBtn");
-myform.appendChild(mysubmit);
-
-// Add a link to download artwork
-var linkCSS = document.createElement("style");
-linkCSS.type = "text/css";
-linkCSS.innerHTML = ".artLink {margin-top: 10px;}"
-document.body.appendChild(linkCSS);
-
-var left = document.getElementsByClassName('medium-5')[0];
-var srcset = left.getElementsByTagName('source')[0].getAttribute('srcset');
-var src = srcset.split(',')[2].slice(0, -3);
-
-var artLink = document.createElement("p");
-artLink.innerHTML = "<a href="+ src +">Link to HD Artwork</a>";
-artLink.classList.add("artLink");
-left.appendChild(artLink);
-
-var div = document.createElement("div");
-
 var artist = '', album = '', label = '', year = 0, month = 0, day = 0, country = 'XW', type = 'album', discs = 0;
 
 if (m = /^https?:\/\/itunes.apple.com\/(?:([a-z]{2})\/)?album\/(?:[^\/]+\/)?id([0-9]+)/.exec(document.location.href)) {
@@ -132,8 +98,10 @@ function callbackFunction(req) {
     add_field("urls.0.link_type", "74");
     add_field("urls.0.url", document.location.href);
 
-    div.appendChild(myform);
-    left.appendChild(div);
+    left = document.getElementsByClassName('medium-5')[0];
+
+    addArtworkLink();
+    addImportButton();
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -144,4 +112,43 @@ function add_field (name, value) {
     field.name = name;
     field.value = value;
     myform.appendChild(field);
+}
+
+function addArtworkLink() {
+    // Add a link to download artwork
+    var linkCSS = document.createElement("style");
+    linkCSS.type = "text/css";
+    linkCSS.innerHTML = ".artLink {margin-top: 10px;}"
+    document.body.appendChild(linkCSS);
+
+    var srcset = left.getElementsByTagName('source')[0].getAttribute('srcset');
+    var src = srcset.split(',')[2].slice(0, -3);
+
+    var artLink = document.createElement("p");
+    artLink.innerHTML = "<a href="+ src +">Link to HD Artwork</a>";
+    artLink.classList.add("artLink");
+    left.appendChild(artLink);
+}
+
+function addImportButton() {
+    myform.method="post";
+    myform.target = "blank";
+    myform.action = document.location.protocol + "//musicbrainz.org/release/add";
+    myform.acceptCharset = "UTF-8";
+
+    // Stylize our button
+    var btnCSS = document.createElement("style");
+    btnCSS.type = "text/css";
+    btnCSS.innerHTML = ".mbBtn {margin-top: 25px; border: 1px solid #ABABAB; cursor: pointer; border-radius: 4px; padding: 10px 15px; background: #F7F7F7;} .mbBtn:hover {background: #DEDEDE}"
+    document.body.appendChild(btnCSS);
+
+    var mysubmit = document.createElement("input");
+    mysubmit.type = "submit";
+    mysubmit.value = "Add to MusicBrainz";
+    mysubmit.classList.add("mbBtn");
+    myform.appendChild(mysubmit);
+
+    var div = document.createElement("div");
+    div.appendChild(myform);
+    left.appendChild(div);
 }
