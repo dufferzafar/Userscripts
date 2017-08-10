@@ -11,7 +11,7 @@
 //**************************************************************************//
 
 var myform = document.createElement("form");
-var artist = '', album = '', label = '', year = 0, month = 0, day = 0, country = 'XW', type = 'album', discs = 0;
+var artist = '', album = '', year = 0, month = 0, day = 0, country = 'XW', type = 'album', discs = 0;
 
 if (m = /^https?:\/\/itunes.apple.com\/(?:([a-z]{2})\/)?album\/(?:[^\/]+\/)?id([0-9]+)/.exec(document.location.href)) {
     country = m[1];
@@ -44,12 +44,6 @@ function callbackFunction(req) {
                 month = m[2];
                 day = m[3];
             }
-
-            label = r.results[i].copyright;
-            if (m = /(?:[0-9]{4} )?(.*)/.exec(r.results[i].copyright)) {
-                label = m[1];
-            }
-
         } else if (r.results[i].wrapperType === "track") {
             var discno = r.results[i].discNumber - 1;
             var trackno = r.results[i].trackNumber - 1;
@@ -87,7 +81,6 @@ function callbackFunction(req) {
     add_field("date.year", year);
     add_field("date.month", month);
     add_field("date.day", day);
-    add_field("labels.0.name", label);
     add_field("country", country);
     add_field("status", "official");
     //add_field("language", "jpn");
