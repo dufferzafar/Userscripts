@@ -83,8 +83,6 @@ function callbackFunction(req) {
     add_field("date.day", day);
     add_field("country", country);
     add_field("status", "official");
-    //add_field("language", "jpn");
-    //add_field("script", "Jpan");
     add_field("type", type);
     add_field("edit_note", "Imported from: "+ document.location.href +
                           " using https://github.com/dufferzafar/Userscripts/blob/master/MB-Import-From-iTunes.user.js");
