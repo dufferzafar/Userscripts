@@ -6,6 +6,7 @@
 // @namespace   http://github.com/dufferzafar/Userscripts
 //
 // @include     *://itunes.apple.com/*
+// @run-at document-idle 
 //
 // ==/UserScript==
 //**************************************************************************//
