@@ -12,7 +12,7 @@ Import album data from iTunes to add a new release on MusicBrainz.
 
 ### Description
 
-The script adds a button on iTunes album pages which allows you to create a import that release on MusicBrainz.
+The script adds a button on iTunes album pages which allows you to import that release on MusicBrainz.
 
 This script was originally created by [Stars](http://userscripts.org/users/41307).
 
