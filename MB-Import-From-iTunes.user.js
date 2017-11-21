@@ -13,10 +13,10 @@
 var myform = document.createElement("form");
 var artist = '', album = '', year = 0, month = 0, day = 0, country = 'XW', type = 'album', discs = 0;
 
-if (m = /^https?:\/\/itunes.apple.com\/(?:([a-z]{2})\/)?album\/(?:[^\/]+\/)?id([0-9]+)/.exec(document.location.href)) {
+if (m = /^https?:\/\/itunes.apple.com\/(?:([a-z]{2})\/)?album\/(?:[^\/]+\/)?(id)?([0-9]+)/.exec(document.location.href)) {
     country = m[1];
 
-    var url = document.location.protocol + "//itunes.apple.com/lookup?id=" + m[2] + "&entity=song&limit=200";
+    var url = document.location.protocol + "//itunes.apple.com/lookup?id=" + m[3] + "&entity=song&limit=200";
     if (m[1]) url = url + "&country=" + m[1];
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('GET', url, true);
