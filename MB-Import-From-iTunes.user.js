@@ -1,34 +1,41 @@
 // ==UserScript==
 // @name        MusicBrainz: Import from iTunes
 // @description Import releases from iTunes
-// @version     2017.11.21.1
+// @version     2019.05.23.0
 // @author      -
 // @namespace   http://github.com/dufferzafar/Userscripts
 //
 // @include     *://itunes.apple.com/*
-// @run-at document-idle 
+// @include     *://music.apple.com/*
+// @run-at      document-idle
+// @grant       GM_xmlhttpRequest
+// @connect     itunes.apple.com
 //
 // ==/UserScript==
 //**************************************************************************//
 
 var myform = document.createElement("form");
 var artist = '', album = '', year = 0, month = 0, day = 0, country = 'XW', type = 'album', discs = 0;
+var m;
+var left;
 
-if (m = /^https?:\/\/itunes.apple.com\/(?:([a-z]{2})\/)?album\/(?:[^\/]+\/)?(id)?([0-9]+)/.exec(document.location.href)) {
-    country = m[1];
+if (m = /^https?:\/\/(itunes|music).apple.com\/(?:([a-z]{2})\/)?album\/(?:[^\/]+\/)?(id)?([0-9]+)/.exec(document.location.href)) {
+    var lookup_url = 'itunes.apple.com';
+    country = m[2];
+    var id = m[4];
 
-    var url = document.location.protocol + "//itunes.apple.com/lookup?id=" + m[3] + "&entity=song&limit=200";
-    if (m[1]) url = url + "&country=" + m[1];
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('GET', url, true);
-    xmlhttp.onreadystatechange = function() { callbackFunction(xmlhttp); };
-    xmlhttp.send(null);
+    var url = document.location.protocol + "//" + lookup_url + "/lookup?id=" + id + "&entity=song&limit=200";
+    if (country) url = url + "&country=" + country;
+    GM_xmlhttpRequest ( {
+        method:     'GET',
+        url:        url,
+        onload:     callbackFunction
+    } );
 }
 
-function callbackFunction(req) {
-    if (xmlhttp.readyState !== 4)
-        return;
-    var r = JSON.parse(xmlhttp.responseText);
+function callbackFunction(responseDetails) {
+
+    var r = JSON.parse(responseDetails.responseText);
 
     for (var i = 0; i < r.results.length; i++) {
         if (r.results[i].wrapperType === "collection") {
@@ -66,8 +73,9 @@ function callbackFunction(req) {
             for (var j = 0; j < artists.length; j++) {
                 add_field("mediums." + discno + ".track." + trackno + ".artist_credit.names." + j + ".name", artists[j].trim());
                 var join_phrase = (j !== artists.length - 1) ? (j === artists.length - 2) ? " & " : ", " : "";
-                if (j !== artists.length - 1)
+                if (j !== artists.length - 1) {
                     add_field("mediums." + discno + ".track." + trackno + ".artist_credit.names." + j + ".join_phrase", join_phrase);
+                }
             }
         }
     }
