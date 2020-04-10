@@ -122,7 +122,7 @@ function addArtworkLink() {
     document.body.appendChild(linkCSS);
 
     var srcset = left.getElementsByTagName('source')[0].getAttribute('srcset');
-    var src = srcset.split(',')[2].slice(0, -3);
+    var src = srcset.split(',')[0].slice(0, -3).replace(/(\/)(\d+)(x0w\.jpg)$/, '$1969$3');
 
     var artLink = document.createElement("p");
     artLink.innerHTML = "<a href="+ src +">Link to HD Artwork</a>";
