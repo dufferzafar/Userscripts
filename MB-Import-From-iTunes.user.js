@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        MusicBrainz: Import from iTunes
+// @name        MusicBrainz: Import from iTunes V2
 // @description Import releases from iTunes
 // @version     2019.05.23.0
 // @author      -
@@ -7,6 +7,8 @@
 //
 // @include     *://itunes.apple.com/*
 // @include     *://music.apple.com/*
+// @require     http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
+// @require     https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @run-at      document-idle
 // @grant       GM_xmlhttpRequest
 // @connect     itunes.apple.com
@@ -18,23 +20,29 @@ var myform = document.createElement("form");
 var artist = '', album = '', year = 0, month = 0, day = 0, country = 'XW', type = 'album', discs = 0;
 var m;
 var left;
+var buttons;
 
-if (m = /^https?:\/\/(itunes|music).apple.com\/(?:([a-z]{2})\/)?album\/(?:[^\/]+\/)?(id)?([0-9]+)/.exec(document.location.href)) {
-    var lookup_url = 'itunes.apple.com';
-    country = m[2];
-    var id = m[4];
+waitForKeyElements(".product-info", run);
 
-    var url = document.location.protocol + "//" + lookup_url + "/lookup?id=" + id + "&entity=song&limit=200";
-    if (country) url = url + "&country=" + country;
-    GM_xmlhttpRequest ( {
-        method:     'GET',
-        url:        url,
-        onload:     callbackFunction
-    } );
+function run() {
+    if (m = /^https?:\/\/(itunes|music).apple.com\/(?:([a-z]{2})\/)?album\/(?:[^\/]+\/)?(id)?([0-9]+)/.exec(document.location.href)) {
+        var lookup_url = 'itunes.apple.com';
+        country = m[2];
+        var id = m[4];
+
+        var url = document.location.protocol + "//" + lookup_url + "/lookup?id=" + id + "&entity=song&limit=200";
+        if (country) url = url + "&country=" + country;
+        GM_xmlhttpRequest ( {
+            method:     'GET',
+            url:        url,
+            onload:     callbackFunction
+        } );
+    }
 }
 
 function callbackFunction(responseDetails) {
 
+    myform.innerHTML = '';
     var r = JSON.parse(responseDetails.responseText);
 
     for (var i = 0; i < r.results.length; i++) {
@@ -98,7 +106,19 @@ function callbackFunction(responseDetails) {
     add_field("urls.0.link_type", "74");
     add_field("urls.0.url", document.location.href);
 
-    left = document.getElementsByClassName('medium-5')[0];
+    left = document.getElementsByClassName('product-info')[0];
+
+    buttons = document.createElement("div");
+    buttons.classList.add("button-content");
+    // left.appendChild(buttons);
+    document.getElementsByClassName('header-and-songs-list')[0].appendChild(buttons);
+
+    // Stylize our button
+    var btnsCSS = document.createElement("style");
+    btnsCSS.type = "text/css";
+    btnsCSS.innerHTML = '.artLink, .mbForm { display: inline-block; margin-top: 10px; } .mbForm { margin-inline-start: 8px; }';
+    document.body.appendChild(btnsCSS);
+
 
     addArtworkLink();
     addImportButton();
@@ -115,22 +135,31 @@ function add_field (name, value) {
 }
 
 function addArtworkLink() {
+    // Removing existing links
+    var elsArt = document.getElementsByClassName('artLink');
+    for (var i = 0 ; i < elsArt.length ; i++) {
+        elsArt[i].remove();
+    }
+
     // Add a link to download artwork
     var linkCSS = document.createElement("style");
     linkCSS.type = "text/css";
     linkCSS.innerHTML = ".artLink {margin-top: 10px;}";
     document.body.appendChild(linkCSS);
 
-    var srcset = left.getElementsByTagName('source')[0].getAttribute('srcset');
-    var src = srcset.split(',')[0].slice(0, -3).replace(/(\/)(\d+)(x0w\.jpg)$/, '$1969$3');
+    var srcset = left.getElementsByClassName('media-artwork-v2__image')[0].getAttribute('srcset');
+    var src = srcset.split(',')[0].slice(0, -3).replace(/(.*jpg) .*$/, '$1').replace(/(\/)(\d+x\d+).*(bb\.jpg)$/, '$1969x969$3');
 
     var artLink = document.createElement("p");
-    artLink.innerHTML = "<a href="+ src +">Link to HD Artwork</a>";
+
+    artLink.innerHTML = "<button onclick=\"window.open('" + src + "')\" class=\"play-button action-button typography-label-emphasized\">Link to HD Artwork</button>";
+    // artLink.innerHTML = "<a href="+ src +" about=\"_blank\">Link to HD Artwork</a>";
     artLink.classList.add("artLink");
-    left.appendChild(artLink);
+    buttons.appendChild(artLink);
 }
 
 function addImportButton() {
+
     myform.method="post";
     myform.target = "blank";
     myform.action = document.location.protocol + "//musicbrainz.org/release/add";
@@ -139,16 +168,20 @@ function addImportButton() {
     // Stylize our button
     var btnCSS = document.createElement("style");
     btnCSS.type = "text/css";
-    btnCSS.innerHTML = ".mbBtn {margin-top: 25px; border: 1px solid #ABABAB; cursor: pointer; border-radius: 4px; padding: 10px 15px; background: #F7F7F7;} .mbBtn:hover {background: #DEDEDE}";
+    // btnCSS.innerHTML = ".mbBtn {margin-top: 25px; border: 1px solid #ABABAB; cursor: pointer; border-radius: 4px; padding: 10px 15px; background: #F7F7F7;} .mbBtn:hover {background: #DEDEDE}";
     document.body.appendChild(btnCSS);
 
     var mysubmit = document.createElement("input");
     mysubmit.type = "submit";
     mysubmit.value = "Add to MusicBrainz";
     mysubmit.classList.add("mbBtn");
+    mysubmit.classList.add("play-button");
+    mysubmit.classList.add("action-button");
+    mysubmit.classList.add("typography-label-emphasized");
     myform.appendChild(mysubmit);
 
     var div = document.createElement("div");
+    div.classList.add("mbForm");
     div.appendChild(myform);
-    left.appendChild(div);
+    buttons.appendChild(div);
 }
