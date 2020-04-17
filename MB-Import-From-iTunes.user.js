@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        MusicBrainz: Import from iTunes V2
+// @name        MusicBrainz: Import from iTunes
 // @description Import releases from iTunes
 // @version     2019.05.23.0
 // @author      -
