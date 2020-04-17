@@ -111,17 +111,17 @@ function callbackFunction(responseDetails) {
     buttons = document.createElement("div");
     buttons.classList.add("button-content");
     // left.appendChild(buttons);
-    document.getElementsByClassName('header-and-songs-list')[0].appendChild(buttons);
+    document.getElementsByClassName('bottom-metadata')[0].appendChild(buttons);
 
     // Stylize our button
     var btnsCSS = document.createElement("style");
     btnsCSS.type = "text/css";
-    btnsCSS.innerHTML = '.artLink, .mbForm { display: inline-block; margin-top: 10px; } .mbForm { margin-inline-start: 8px; }';
+    btnsCSS.innerHTML = '.artLink, .mbForm { display: inline-block; margin-top: 10px; } .mbForm { margin-inline-end: 8px; }';
     document.body.appendChild(btnsCSS);
 
 
-    addArtworkLink();
     addImportButton();
+    addArtworkLink();
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -144,7 +144,7 @@ function addArtworkLink() {
     // Add a link to download artwork
     var linkCSS = document.createElement("style");
     linkCSS.type = "text/css";
-    linkCSS.innerHTML = ".artLink {margin-top: 10px;}";
+    linkCSS.innerHTML = ".artLink {float: right; margin-top: 10px;} .artLink button, .artLink button span.btn-text { -webkit-margin-end: 0 !important; margin-inline-end: 0 !important; }";
     document.body.appendChild(linkCSS);
 
     var srcset = left.getElementsByClassName('media-artwork-v2__image')[0].getAttribute('srcset');
@@ -152,7 +152,8 @@ function addArtworkLink() {
 
     var artLink = document.createElement("p");
 
-    artLink.innerHTML = "<button onclick=\"window.open('" + src + "')\" class=\"play-button action-button typography-label-emphasized\">Link to HD Artwork</button>";
+    // artLink.innerHTML = "<input type=\"button\" value=\"Link to HD Artwork\" onclick=\"window.open('" + src + "')\" class=\"play-button action-button typography-label-emphasized\"></button>";
+    artLink.innerHTML = "<button onclick=\"window.open('" + src + "')\" class=\"web-add-to-library add-to-library not-in-library round-button typography-label is-pill typ-label\"><span class=\"btn-text\">Link to HD Artwork</span></button>";
     // artLink.innerHTML = "<a href="+ src +" about=\"_blank\">Link to HD Artwork</a>";
     artLink.classList.add("artLink");
     buttons.appendChild(artLink);
