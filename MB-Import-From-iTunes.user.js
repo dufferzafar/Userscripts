@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        MusicBrainz: Import from iTunes
 // @description Import releases from iTunes
-// @version     2019.05.23.0
+// @version     2020.04.21.0
 // @author      -
 // @namespace   http://github.com/dufferzafar/Userscripts
 //
