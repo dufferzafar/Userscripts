@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        MusicBrainz: Import from iTunes
 // @description Import releases from iTunes
-// @version     2020.04.21.0
+// @version     2020.04.25.0
 // @author      -
 // @namespace   http://github.com/dufferzafar/Userscripts
 //
@@ -72,6 +72,11 @@ function callbackFunction(responseDetails) {
                 if (trackname === str1 && str2.match(/^ \(.*\)$/)) {
                     trackname = r.results[i].trackCensoredName;
                 }
+            }
+
+            // Fixing "trackname" and "trackCensoredName" differences
+            if (r.results[i].trackCensoredName && trackname !== r.results[i].trackCensoredName) {
+                trackname += r.results[i].trackCensoredName.substr(trackname.length);
             }
 
             add_field("mediums." + discno + ".track." + trackno + ".name", trackname);
