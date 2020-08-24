@@ -128,7 +128,8 @@ function addArtworkLink() {
     var imageDiv = document.getElementsByClassName('media-artwork-v2--downloaded')[0];
     var imageImg = imageDiv.getElementsByTagName('img')[0];
     var srcset = imageImg.getAttribute('srcset');
-    var src = srcset.split(',')[2].slice(0, -5);
+    var splitSrcset = srcset.split(',')
+    var src = splitSrcset[splitSrcset.length - 1].slice(0, -5);
 
     var artLinkP = document.createElement("div");
     var artLink = document.createElement("a");
