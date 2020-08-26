@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        MusicBrainz: Import from iTunes
 // @description Import releases from iTunes
-// @version     2019.05.23.0
+// @version     2020.08.23.0
 // @author      -
 // @namespace   http://github.com/dufferzafar/Userscripts
 //
@@ -35,6 +35,7 @@ if (m = /^https?:\/\/(itunes|music).apple.com\/(?:([a-z]{2})\/)?album\/(?:[^\/]+
 
 function callbackFunction(responseDetails) {
 
+    let intervalId;
     var r = JSON.parse(responseDetails.responseText);
 
     for (var i = 0; i < r.results.length; i++) {
@@ -98,10 +99,13 @@ function callbackFunction(responseDetails) {
     add_field("urls.0.link_type", "74");
     add_field("urls.0.url", document.location.href);
 
-    left = document.getElementsByClassName('medium-5')[0];
+    intervalId = setInterval(() => { if (document.getElementsByClassName('hydrated')[0]) {
+        left = document.getElementById('web-navigation-container');
+        addArtworkLink();
+        addImportButton();
+        clearInterval(intervalId);
+    } }, 100);
 
-    addArtworkLink();
-    addImportButton();
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -118,16 +122,24 @@ function addArtworkLink() {
     // Add a link to download artwork
     var linkCSS = document.createElement("style");
     linkCSS.type = "text/css";
-    linkCSS.innerHTML = ".artLink {margin-top: 10px;}";
+    linkCSS.innerHTML = ".artLink {margin-left: 25px; margin-top: 10px;}";
     document.body.appendChild(linkCSS);
 
-    var srcset = left.getElementsByTagName('source')[0].getAttribute('srcset');
-    var src = srcset.split(',')[2].slice(0, -3);
+    var imageDiv = document.getElementsByClassName('media-artwork-v2--downloaded')[0];
+    var imageImg = imageDiv.getElementsByTagName('img')[0];
+    var srcset = imageImg.getAttribute('srcset');
+    var splitSrcset = srcset.split(',')
+    var src = splitSrcset[splitSrcset.length - 1].slice(0, -5);
 
-    var artLink = document.createElement("p");
-    artLink.innerHTML = "<a href="+ src +">Link to HD Artwork</a>";
-    artLink.classList.add("artLink");
-    left.appendChild(artLink);
+    var artLinkP = document.createElement("div");
+    var artLink = document.createElement("a");
+    artLink.setAttribute("href", src);
+    artLink.setAttribute("target", "_blank");
+    artLink.textContent = "Link to HD Artwork";
+    artLink.addEventListener("click", function (event) { event.stopPropagation(); });
+    artLinkP.classList.add("artLink");
+    artLinkP.appendChild(artLink);
+    left.appendChild(artLinkP);
 }
 
 function addImportButton() {
@@ -139,7 +151,7 @@ function addImportButton() {
     // Stylize our button
     var btnCSS = document.createElement("style");
     btnCSS.type = "text/css";
-    btnCSS.innerHTML = ".mbBtn {margin-top: 25px; border: 1px solid #ABABAB; cursor: pointer; border-radius: 4px; padding: 10px 15px; background: #F7F7F7;} .mbBtn:hover {background: #DEDEDE}";
+    btnCSS.innerHTML = ".mbBtn {margin-left: 25px; margin-top: 25px; border: 1px solid #ABABAB; cursor: pointer; border-radius: 4px; padding: 10px 15px; background: #F7F7F7;} .mbBtn:hover {background: #DEDEDE}";
     document.body.appendChild(btnCSS);
 
     var mysubmit = document.createElement("input");
