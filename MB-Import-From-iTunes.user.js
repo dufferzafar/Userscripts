@@ -125,8 +125,8 @@ function addArtworkLink() {
     linkCSS.innerHTML = ".artLink {margin-left: 25px; margin-top: 10px;}";
     document.body.appendChild(linkCSS);
 
-    var imageDiv = document.getElementsByClassName('media-artwork-v2--downloaded')[0];
-    var imageImg = imageDiv.getElementsByTagName('img')[0];
+    var imageDiv = document.getElementsByClassName('product-info')[0];
+    var imageImg = imageDiv.getElementsByClassName('media-artwork-v2__image')[0];
     var srcset = imageImg.getAttribute('srcset');
     var splitSrcset = srcset.split(',')
     var src = splitSrcset[splitSrcset.length - 1].slice(0, -5);
