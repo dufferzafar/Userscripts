@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        MusicBrainz: Import from iTunes
 // @description Import releases from iTunes
-// @version     2020.08.23.0
+// @version     2020.11.13.0
 // @author      -
 // @namespace   http://github.com/dufferzafar/Userscripts
 //
@@ -99,12 +99,12 @@ function callbackFunction(responseDetails) {
     add_field("urls.0.link_type", "74");
     add_field("urls.0.url", document.location.href);
 
-    intervalId = setInterval(() => { if (document.getElementsByClassName('hydrated')[0]) {
+    intervalId = setTimeout(() => { if (document.getElementsByClassName('hydrated')[0]) {
         left = document.getElementById('web-navigation-container');
         addArtworkLink();
         addImportButton();
         clearInterval(intervalId);
-    } }, 100);
+    } }, 500);
 
 }
 
@@ -126,8 +126,10 @@ function addArtworkLink() {
     document.body.appendChild(linkCSS);
 
     var imageDiv = document.getElementsByClassName('product-info')[0];
-    var imageImg = imageDiv.getElementsByClassName('media-artwork-v2__image')[0];
-    var srcset = imageImg.getAttribute('srcset');
+    var pictureTag = imageDiv.getElementsByTagName('picture')[0];
+    var sourceTags = pictureTag.getElementsByTagName('source');
+    var sourceTag = Array.from(sourceTags).filter(el => el.type == "image/jpeg")[0]
+    var srcset = sourceTag.getAttribute('srcset');
     var splitSrcset = srcset.split(',')
     var src = splitSrcset[splitSrcset.length - 1].slice(0, -5);
 
