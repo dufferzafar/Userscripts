@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        MusicBrainz: Import from iTunes
 // @description Import releases from iTunes
-// @version     2021.03.01.0
+// @version     2021.10.01.0
 // @author      -
 // @namespace   http://github.com/dufferzafar/Userscripts
 //
@@ -115,7 +115,7 @@ function callbackFunction(responseDetails) {
     add_field("type", type);
     add_field("edit_note", "Imported from: "+ document.location.href +
                           " using https://github.com/dufferzafar/Userscripts/blob/master/MB-Import-From-iTunes.user.js");
-    add_field("urls.0.link_type", "74");
+    add_field("urls.0.link_type", "980");
     add_field("urls.0.url", document.location.href);
 
     // label
