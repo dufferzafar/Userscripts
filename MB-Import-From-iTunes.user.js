@@ -28,7 +28,7 @@ var m;
 var left;
 var product, buttons;
 
-waitForKeyElements(".product-info", run);
+waitForKeyElements("main > .content-container", run);
 
 function run() {
     if (m = /^https?:\/\/(itunes|music).apple.com\/(?:([a-z]{2})\/)?album\/(?:[^\/]+\/)?(id)?([0-9]+)/.exec(document.location.href)) {
@@ -119,18 +119,18 @@ function callbackFunction(responseDetails) {
     add_field("urls.0.url", document.location.href);
 
     // label
-    var copyright = document.getElementsByClassName('bottom-metadata')[0].getElementsByClassName('song-copyright')[0].innerText,
-        labels = copyright.replace(/℗\s*\d{4}/g, '').split(/\s*(?:\/)\s*/);
+    var copyright = document.getElementsByClassName('footer-body')[0].getElementsByClassName('description')[0].innerText,
+        labels = copyright.replace(/^.+℗\s*\d{4}/gs, '').split(/\s*(?:\/)\s*/);
     labels.forEach((label, x) => {
         add_field("labels." + x + ".name", label.trim());
     });
 
     left = document.getElementById('web-navigation-container');
-    product = document.getElementsByClassName('product-info')[0];
+    product = document.getElementsByTagName('main')[0].getElementsByClassName('content-container')[0];
 
     buttons = document.createElement("div");
     buttons.classList.add("button-content");
-    document.getElementsByClassName('bottom-metadata')[0].appendChild(buttons);
+    document.getElementsByClassName('footer-body')[0].appendChild(buttons);
 
     // Stylize our button
     var btnsCSS = document.createElement("style");
@@ -167,7 +167,7 @@ function addArtworkLink() {
     linkCSS.innerHTML = ".artLink {float: right; margin-top: 10px;} .artLink button, .artLink a, .artLink button span.btn-text, .artLink a span.btn-text { -webkit-margin-end: 0 !important; margin-inline-end: 0 !important; }";
     document.body.appendChild(linkCSS);
 
-    var divArtwork = product.getElementsByClassName('media-artwork-v2')[0],
+    var divArtwork = product.getElementsByClassName('artwork-component')[0],
         imagePicture = divArtwork.getElementsByTagName('source')[1],
         srcset = imagePicture.getAttribute('srcset');
     var src = srcset.split(',')[0].slice(0, -3).replace(/(.*jpg) .*$/, '$1').replace(/(\/)(\d+x\d+).*(bb(\-\d+)?\.jpg)$/, '$19999x9999$3');
